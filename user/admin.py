@@ -1,6 +1,10 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 from .models import Profile
-
+from . import models
 # Register your models here.
 
-admin.site.register(Profile)
+class profileAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    ...
+
+admin.site.register(models.Profile, profileAdmin)

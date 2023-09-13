@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap4',
     'simple_history',
-    #'import_export',
+    'apiapp.apps.ApiappConfig',
+    'rest_framework',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +96,7 @@ WSGI_APPLICATION = 'Inventory.wsgi.application'
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME':  'AirQoHardWare',
 #         'USER': 'postgres',
-#         'PASSWORD': '',
+#         'PASSWORD': 'P@ss1234',
 #         'HOST': 'localhost'
 #     }
 # }
@@ -103,7 +105,12 @@ WSGI_APPLICATION = 'Inventory.wsgi.application'
 DATABASES = {
     'default' : dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4'
 
