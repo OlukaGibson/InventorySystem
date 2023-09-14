@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
 from datetime import datetime, timedelta
+from apiapp.models import FirmwareUpdate
 
 # Create your views here.
 
@@ -450,3 +451,23 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
+
+@login_required
+def display_firmware_updates(request):
+    firmware_updates = FirmwareUpdate.objects.all().order_by('-device_id')
+
+    group_by = request.GET.get('group_by')
+
+    if group_by == 'version':
+        firmware_updates = firmware_updates.order_by('version')
+    elif group_by == 'batteryValue':
+        firmware_updates = firmware_updates.order_by('batteryValue')
+    elif group_by == 'spvValue':
+        firmware_updates = firmware_updates.order_by('spvValue')
+
+    context = {
+        'firmware_updates': firmware_updates,
+        'group_by': group_by
+        }
+    
+    return render(request, 'dashboard/firmware_update.html', context)

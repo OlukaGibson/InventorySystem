@@ -24,4 +24,5 @@ urlpatterns = [
     path('export_stock/', views.export_stock_to_csv, name='export_stock'),
     path('details/<int:pk>/',  views.details, name='details'),
     path('history/<int:pk>/',  views.history, name='history'),
+    path('display_firmware_updates/',  views.display_firmware_updates, name='display_firmware_updates'),
 ]
