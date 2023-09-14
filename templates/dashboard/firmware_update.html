@@ -84,33 +84,33 @@
                     {% csrf_token %}
                     <label for="new_spvValue">New SPV Value:</label>
                     <input type="text" name="new_spvValue" required>
-                <table class="table bg-white">
-                    <thead class="bg-primary">
-                        <tr class="text-white">
-                            <th scope="col"></th>
-                            <th scope="col">Device ID</th>
-                            <th scope="col">Version</th>
-                            <th scope="col">Spv Value</th>
-                            <th scope="col">Battery Value</th>
-                            <th>Select</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for firmware_update in firmware_updates %}
-                        <tr>
-                            <th scope="row">{{forloop.counter}}</th>
-                            <td>{{ firmware_update.device_id }}</td>
-                            <td>{{ firmware_update.version }}</td>
-                            <td>{{ firmware_update.spvValue }}</td>
-                            <td>{{ firmware_update.batteryValue}}</td>
-                            <td>{{ firmware_update.description }}</td>
-                            <td><input type="checkbox" name="selected_firmware_updates" value="{{firmware_update.id}}"></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <button type="submit">Save Changes</button>
-            </form>
+                    <table class="table bg-white">
+                        <thead class="bg-primary">
+                            <tr class="text-white">
+                                <th scope="col"></th>
+                                <th scope="col">Device ID</th>
+                                <th scope="col">Version</th>
+                                <th scope="col">Spv Value</th>
+                                <th scope="col">Battery Value</th>
+                                <th scope="col">Select</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for firmware_update in firmware_updates %}
+                            <tr>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td>{{ firmware_update.device_id }}</td>
+                                <td>{{ firmware_update.version }}</td>
+                                <td>{{ firmware_update.spvValue }}</td>
+                                <td>{{ firmware_update.batteryValue}}</td>
+                                <td>{{ firmware_update.description }}</td>
+                                <td><input type="checkbox" name="selected_firmware_updates" value="{{firmware_update.id}}"></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <button type="submit">Save Changes</button>
+                </form>
             </div>
         </div>
   
