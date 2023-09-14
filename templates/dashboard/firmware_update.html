@@ -102,15 +102,15 @@
                                 <td>{{ firmware_update.device_id }}</td>
                                 <td>{{ firmware_update.version }}</td>
                                 <td>{{ firmware_update.spvValue }}</td>
-                                <td>{{ firmware_update.batteryValue}}</td>
-                                <td>{{ firmware_update.description }}</td>
-                                <td><input type="checkbox" name="selected_firmware_updates" value="{{firmware_update.id}}"></td>
+                                <td>{{ firmware_update.batteryValue }}</td>
+                                <td><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                     <button type="submit">Save Changes</button>
                 </form>
+                
             </div>
         </div>
   

@@ -466,16 +466,15 @@ def display_firmware_updates(request):
         firmware_updates = firmware_updates.order_by('spvValue')
 
     if request.method == 'POST':
-        selected_ids = request.POST.getlist('selected_ids')
+        selected_ids = request.POST.getlist('selected_firmware_updates')
         new_spvValue = request.POST.get('new_spvValue')
 
         # Perform the bulk update operation
         FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_spvValue)
 
-
     context = {
         'firmware_updates': firmware_updates,
-        'group_by': group_by
-        }
-    
+        'group_by': group_by,
+    }
+
     return render(request, 'dashboard/firmware_update.html', context)
