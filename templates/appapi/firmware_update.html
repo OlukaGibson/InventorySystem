@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    
+    <!--Top Side-->
+    <div class="container">
+        <div class="row mt-4">
+            
+            <!--End Left Top Side-->
+  
+            <!--Right Top Side-->
+            <div class="container">
+              <div class="row mt-4">
+                  <div class="col-md-4">
+                      <div class="card">
+                          <div class="card-header bg-primary text-white">
+                              Information
+                          </div>
+                          <div class="card-body">
+                              <marquee behavior="" direction="">
+                                  <h3 class="my-4">Welcome {{user.username}}</h3>
+                              </marquee>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-8">
+                      <div class="card">
+                          <div class="card-header bg-primary text-white">
+                              Menu
+                          </div>
+                          <div class="card-body">
+                              <div class="row">
+                                  <div class="col-md-4">
+                                      <a class="text-decoration-none text-dark" href="{% url 'staff' %}">
+                                          <div class="card my-card shadow text-center p-3">
+                                              <h4>Employees <i class="fas fa-users"></i></h4>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <a class="text-decoration-none text-dark" href="{% url 'products' %}">
+                                          <div class="card my-card shadow text-center p-3">
+                                              <h4>Inventory <i class="fas fa-box"></i></h4>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <a class="text-decoration-none text-dark" href="{% url 'metadata' %}">
+                                          <div class="card my-card shadow text-center p-3">
+                                              <h4>Reports <i class="fas fa-shipping-fast"></i></h4>
+                                          </div>
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+            <!--End Right Top Side-->
+  
+        </div>
+    </div>
+    <!--End Top Side-->
+    <!--Table-->
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-10">
+                <a href="?group_by=version">
+                    <button type="button" class="btn btn-primary">
+                        Group by Version
+                    </button>
+                </a>      
+                <a href="?group_by=batteryValue">
+                    <button type="button" class="btn btn-primary">
+                        Group by Battery Value
+                    </button>
+                </a>
+                <a href="?group_by=spvValue">
+                    <button type="button" class="btn btn-primary">
+                        Group by SPV Value
+                    </button>
+                </a>
+                <form method="post" action="{% url 'update_selected_values' %}">
+                    {% csrf_token %}
+                <table class="table bg-white">
+                    <thead class="bg-primary">
+                        <tr class="text-white">
+                            <th scope="col"></th>
+                            <th scope="col">Device ID</th>
+                            <th scope="col">Version</th>
+                            <th scope="col">Spv Value</th>
+                            <th scope="col">Battery Value</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for firmware_update in firmware_updates %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{ firmware_update.device_id }}</td>
+                            <td>{{ firmware_update.version }}</td>
+                            <td>{{ firmware_update.spvValue }}</td>
+                            <td>{{ firmware_update.batteryValue}}</td>
+                            <td>{{ firmware_update.description }}</td>
+                            <td><input type="checkbox" name="selected_updates" value="{{ firmware_update.id }}"></td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="8">
+                                <button type="button" class="btn btn-primary" onclick="showEditForm('spvValue')">Edit SPV Value</button>
+                                <button type="button" class="btn btn-primary" onclick="showEditForm('batteryValue')">Edit Battery Value</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </form>
+            </div>
+        </div>
+  
+    </div>
+
+    <!-- Edit form for SPV Value -->
+    <div id="editSPVForm" style="display: none;">
+        <form method="post" action="{% url 'update_selected_values' %}">
+            {% csrf_token %}
+            <label for="new_spv_value">Set new SPV Value: </label>
+            <input type="number" name="new_spv_value" id="new_spv_value">
+            <input type="hidden" name="field_to_edit" value="spvValue">
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <!-- Edit form for Battery Value -->
+    <div id="editBatteryForm" style="display: none;">
+        <form method="post" action="{% url 'update_selected_values' %}">
+            {% csrf_token %}
+            <label for="new_battery_value">Set new Battery Value: </label>
+            <input type="number" name="new_battery_value" id="new_battery_value">
+            <input type="hidden" name="field_to_edit" value="batteryValue">
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    <script>
+        function showEditForm(field) {
+            const spvForm = document.getElementById('editSPVForm');
+            const batteryForm = document.getElementById('editBatteryForm');
+
+            if (field === 'spvValue') {
+                spvForm.style.display = 'block';
+                batteryForm.style.display = 'none';
+            } else if (field === 'batteryValue') {
+                spvForm.style.display = 'none';
+                batteryForm.style.display = 'block';
+            }
+        }
+    </script>
+    <!--End Table-->
+{% endblock%}
