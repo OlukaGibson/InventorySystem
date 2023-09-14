@@ -80,6 +80,10 @@
                         Group by SPV Value
                     </button>
                 </a>
+                <form method="post" action="{% url 'display_firmware_updates' %}">
+                    {% csrf_token %}
+                    <label for="new_spvValue">New SPV Value:</label>
+                    <input type="text" name="new_spvValue" required>
                 <table class="table bg-white">
                     <thead class="bg-primary">
                         <tr class="text-white">
@@ -103,7 +107,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                </form>
+                <button type="submit">Save Changes</button>
+            </form>
             </div>
         </div>
   
