@@ -2,6 +2,8 @@ from django import forms
 from .models import Stock, Casing, Production
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
+from apiapp.models import FirmwareUpdate
+
 
 
 class InventoryForm(forms.ModelForm):
@@ -68,5 +70,14 @@ class MyForm(forms.Form):
             'choice'
         )
 
+#the edits
 
-#end edits
+class SPVForm(forms.ModelForm):
+    class Meta:
+        model = FirmwareUpdate
+        fields = ['spvValue']
+
+class BatteryForm(forms.ModelForm):
+    class Meta:
+        model = FirmwareUpdate
+        fields = ['batteryValue']

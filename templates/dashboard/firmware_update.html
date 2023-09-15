@@ -9,111 +9,177 @@
   
             <!--Right Top Side-->
             <div class="container">
-              <div class="row mt-4">
-                  <div class="col-md-4">
-                      <div class="card">
-                          <div class="card-header bg-primary text-white">
-                              Information
-                          </div>
-                          <div class="card-body">
-                              <marquee behavior="" direction="">
-                                  <h3 class="my-4">Welcome {{user.username}}</h3>
-                              </marquee>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="col-md-8">
-                      <div class="card">
-                          <div class="card-header bg-primary text-white">
-                              Menu
-                          </div>
-                          <div class="card-body">
-                              <div class="row">
-                                  <div class="col-md-4">
-                                      <a class="text-decoration-none text-dark" href="{% url 'staff' %}">
-                                          <div class="card my-card shadow text-center p-3">
-                                              <h4>Employees <i class="fas fa-users"></i></h4>
-                                          </div>
-                                      </a>
-                                  </div>
-                                  <div class="col-md-4">
-                                      <a class="text-decoration-none text-dark" href="{% url 'products' %}">
-                                          <div class="card my-card shadow text-center p-3">
-                                              <h4>Inventory <i class="fas fa-box"></i></h4>
-                                          </div>
-                                      </a>
-                                  </div>
-                                  <div class="col-md-4">
-                                      <a class="text-decoration-none text-dark" href="{% url 'metadata' %}">
-                                          <div class="card my-card shadow text-center p-3">
-                                              <h4>Reports <i class="fas fa-shipping-fast"></i></h4>
-                                          </div>
-                                      </a>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                Information
+                            </div>
+                            <div class="card-body">
+                                <marquee behavior="" direction="">
+                                    <h3 class="my-4">
+                                        Welcome {{user.username}}
+                                    </h3>
+                                </marquee>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                Menu
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <a class="text-decoration-none text-dark" href="{% url 'staff' %}">
+                                            <div class="card my-card shadow text-center p-3">
+                                                <h4>
+                                                    Employees <i class="fas fa-users"></i>
+                                                </h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a class="text-decoration-none text-dark" href="{% url 'products' %}">
+                                            <div class="card my-card shadow text-center p-3">
+                                                <h4>
+                                                    Inventory <i class="fas fa-box"></i>
+                                                </h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a class="text-decoration-none text-dark" href="{% url 'metadata' %}">
+                                            <div class="card my-card shadow text-center p-3">
+                                                <h4>Reports <i class="fas fa-shipping-fast"></i></h4>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--End Right Top Side-->
   
         </div>
     </div>
     <!--End Top Side-->
     <!--Table-->
-    <div class="container">
-        <div class="row my-4">
-            <div class="col-md-10">
-                <a href="?group_by=firmware">
-                    <button type="button" class="btn btn-primary">
-                        Group by Firmware
-                    </button>
-                </a>      
-                <a href="?group_by=batteryValue">
-                    <button type="button" class="btn btn-primary">
-                        Group by Battery Value
-                    </button>
-                </a>
-                <a href="?group_by=spvValue">
-                    <button type="button" class="btn btn-primary">
-                        Group by SPV Value
-                    </button>
-                </a>
-                <form method="post" action="{% url 'display_firmware_updates' %}">
-                    {% csrf_token %}
-                    <label for="new_spvValue">New SPV Value:</label>
-                    <input type="text" name="new_spvValue" required>
-                    <table class="table bg-white">
-                        <thead class="bg-primary">
-                            <tr class="text-white">
-                                <th scope="col"></th>
-                                <th scope="col">Device ID</th>
-                                <th scope="col">Version</th>
-                                <th scope="col">Spv Value</th>
-                                <th scope="col">Battery Value</th>
-                                <th scope="col">Select</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for firmware_update in firmware_updates %}
-                            <tr>
-                                <th scope="row">{{forloop.counter}}</th>
-                                <td>{{ firmware_update.device_id }}</td>
-                                <td>{{ firmware_update.version }}</td>
-                                <td>{{ firmware_update.spvValue }}</td>
-                                <td>{{ firmware_update.batteryValue }}</td>
-                                <td><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <button type="submit">Save Changes</button>
-                </form>
-                
+    
+        <form method="post" action="{% url 'display_firmware_updates' %}">
+            <div class="container">
+                <div class="row my-4">
+                    <div class="col-md-10">
+                        <a href="?group_by=firmware">
+                            <button type="button" class="btn btn-primary">
+                                Group by Firmware
+                            </button>
+                        </a>      
+                        <a href="?group_by=batteryValue">
+                            <button type="button" class="btn btn-primary">
+                                Group by Battery Value
+                            </button>
+                        </a>
+                        <a href="?group_by=spvValue">
+                            <button type="button" class="btn btn-primary">
+                                Group by SPV Value
+                            </button>
+                        </a>
+                        <table class="table bg-white">
+                            <thead class="bg-primary">
+                                <tr class="text-white">
+                                    <th scope="col"></th>
+                                    <th scope="col">Device ID</th>
+                                    <th scope="col">Version</th>
+                                    <th scope="col">Spv Value</th>
+                                    <th scope="col">Battery Value</th>
+                                    <th scope="col">Select</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for firmware_update in firmware_updates %}
+                                <tr>
+                                    <th scope="row">{{forloop.counter}}</th>
+                                    <td>{{ firmware_update.device_id }}</td>
+                                    <td>{{ firmware_update.version }}</td>
+                                    <td>{{ firmware_update.spvValue }}</td>
+                                    <td>{{ firmware_update.batteryValue }}</td>
+                                    <td><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-  
-    </div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal1">
+                Edit SPV Value
+            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal2">
+                Edit Battery Value
+            </button>
 
+            <div class="modal fade" id="popupFormModal1" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="popupFormModalLabel1">
+                                Edit SPV Value
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                {% csrf_token %}
+                                {{ newStockForm|crispy }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" name="newStockForm" class="btn btn-primary">Submit</button>
+                            <!-- Add an additional button if needed -->
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="modal fade" id="popupFormModal2" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel2" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="popupFormModalLabel2">Dispense</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Your form goes here -->
+                                {% csrf_token %}
+                                {{ newBatteryForm|crispy }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" name="dispenseForm" class="btn btn-primary">Submit</button>
+                            <!-- Add an additional button if needed -->
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            // JavaScript to handle the form submission inside the modal
+            const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="newBatteryForm"]');
+            const form1SubmitButton = document.querySelector('#popupFormModal1 button[name="newStockForm"]');
+            form2SubmitButton.addEventListener('click', function () {
+                // Submit the form when the "Submit" button is clicked
+                document.querySelector('#popupFormModal2 form').submit();
+            });
+            form1SubmitButton.addEventListener('click', function () {
+                // Submit the form when the "Submit" button is clicked
+                document.querySelector('#popupFormModal1 form').submit();
+            });
+        </script>
 {% endblock%}

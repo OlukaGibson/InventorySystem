@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, SPVForm, BatteryForm
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
@@ -467,10 +467,19 @@ def display_firmware_updates(request):
 
     if request.method == 'POST':
         selected_ids = request.POST.getlist('selected_firmware_updates')
-        new_spvValue = request.POST.get('new_spvValue')
+        newSPVForm = SPVForm(request.POST)
+        newBatteryForm = BatteryForm(request.POST)
 
-        # Perform the bulk update operation
-        FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_spvValue)
+        if newSPVForm.is_valid():
+            new_spvValue = newSPVForm.cleaned_data['spvValue']
+            # Perform the bulk update operation
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_spvValue)
+        
+        if newBatteryForm.is_valid():
+            new_batteryValue = newBatteryForm.cleaned_data['batteryValue']
+            # Perform the bulk update operation
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(batteryValue=new_batteryValue)
+
 
     context = {
         'firmware_updates': firmware_updates,
