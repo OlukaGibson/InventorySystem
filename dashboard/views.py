@@ -465,30 +465,20 @@ def display_firmware_updates(request):
     elif group_by == 'spvValue':
         firmware_updates = firmware_updates.order_by('spvValue')
 
-    # Initialize the forms with empty instances
-    newSPVForm = SPVForm()
-    newBatteryForm = BatteryForm()
-
     if request.method == 'POST':
         selected_ids = request.POST.getlist('selected_firmware_updates')
-        newSPVForm = SPVForm(request.POST)
-        newBatteryForm = BatteryForm(request.POST)
+        edit_feature = request.POST.get('edit_feature')
+        new_value = request.POST.get('new_value')
 
-        if newSPVForm.is_valid():
-            new_spvValue = newSPVForm.cleaned_data['spvValue']
-            # Perform the bulk update operation
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_spvValue)
-        
-        if newBatteryForm.is_valid():
-            new_batteryValue = newBatteryForm.cleaned_data['batteryValue']
-            # Perform the bulk update operation
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(batteryValue=new_batteryValue)
+        # Update the selected entries based on the chosen feature
+        if edit_feature == 'spvValue':
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_value)
+        elif edit_feature == 'batteryValue':
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(batteryValue=new_value)
 
     context = {
         'firmware_updates': firmware_updates,
         'group_by': group_by,
-        'newBatteryForm': newBatteryForm,
-        'newStockForm': newSPVForm,
     }
 
     return render(request, 'dashboard/firmware_update.html', context)
