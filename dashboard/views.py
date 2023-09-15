@@ -484,6 +484,8 @@ def display_firmware_updates(request):
     context = {
         'firmware_updates': firmware_updates,
         'group_by': group_by,
+        'newBatteryForm': newBatteryForm,
+        'newStockForm': newSPVForm,
     }
 
     return render(request, 'dashboard/firmware_update.html', context)
