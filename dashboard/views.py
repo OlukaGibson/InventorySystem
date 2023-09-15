@@ -465,6 +465,10 @@ def display_firmware_updates(request):
     elif group_by == 'spvValue':
         firmware_updates = firmware_updates.order_by('spvValue')
 
+    # Initialize the forms with empty instances
+    newSPVForm = SPVForm()
+    newBatteryForm = BatteryForm()
+
     if request.method == 'POST':
         selected_ids = request.POST.getlist('selected_firmware_updates')
         newSPVForm = SPVForm(request.POST)
@@ -480,7 +484,6 @@ def display_firmware_updates(request):
             # Perform the bulk update operation
             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(batteryValue=new_batteryValue)
 
-
     context = {
         'firmware_updates': firmware_updates,
         'group_by': group_by,
@@ -489,3 +492,4 @@ def display_firmware_updates(request):
     }
 
     return render(request, 'dashboard/firmware_update.html', context)
+
