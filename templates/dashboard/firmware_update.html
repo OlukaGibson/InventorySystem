@@ -134,8 +134,10 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <form method="post">
                                 {% csrf_token %}
                                 {{ newStockForm|crispy }}
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" name="newStockForm" class="btn btn-primary">Submit</button>
@@ -157,8 +159,10 @@
                         </div>
                         <div class="modal-body">
                             <!-- Your form goes here -->
+                            <form method="post">
                                 {% csrf_token %}
                                 {{ newBatteryForm|crispy }}
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" name="dispenseForm" class="btn btn-primary">Submit</button>
