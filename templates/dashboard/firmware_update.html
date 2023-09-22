@@ -74,19 +74,19 @@
                 <form method="post" action="{% url 'display_firmware_updates' %}">
                     {% csrf_token %}
                 <div class="row my-4">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label>Select the feature to edit:</label>
-                        <input type="radio" name="edit_feature" value="firmware_version"> Firmware Version
-                        <input type="radio" name="edit_feature" value="syncState"> Sync State
-                        <input type="radio" name="edit_feature" value="spvValue"> SPV Value
-                        <input type="radio" name="edit_feature" value="confrigDownload"> Confriguration Download
+                        <input type="radio" name="edit_feature" value="firmware_version"> Firmware Version<br>
+                        <input type="radio" name="edit_feature" value="syncState"> Sync State<br>
+                        <input type="radio" name="edit_feature" value="spvValue"> SPV Value<br>
+                        <input type="radio" name="edit_feature" value="confrigDownload"> Confriguration Download<br>
                         <br>
                         <label>Enter the new value:</label>
                         <input type="number" name="new_value">
                         <br>
                         <input type="submit" value="Apply Changes" class="btn btn-primary">
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <a href="?group_by=firmware_version">
                             <button type="button" class="btn btn-primary">
                                 Group by Firmware Version
