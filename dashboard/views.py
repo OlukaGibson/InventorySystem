@@ -6,12 +6,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, SPVForm, BatteryForm
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm#, SPVForm, BatteryForm
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
 from datetime import datetime, timedelta
-from apiapp.models import FirmwareUpdate
+from apiapp.models import FirmwareUpdate, FirmwareUpdateHistory, Device
 
 # Create your views here.
 
@@ -454,16 +454,20 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.all().order_by('-device_id')
+    firmware_updates = FirmwareUpdate.objects.select_related('device_name').all().order_by('-device_name')
 
     group_by = request.GET.get('group_by')
 
-    if group_by == 'version':
-        firmware_updates = firmware_updates.order_by('version')
-    elif group_by == 'batteryValue':
-        firmware_updates = firmware_updates.order_by('batteryValue')
+    if group_by == 'firmware_version':
+        firmware_updates = firmware_updates.order_by('firmware_version')
+    elif group_by == 'fileDownload':
+        firmware_updates = firmware_updates.order_by('fileDownload')
     elif group_by == 'spvValue':
         firmware_updates = firmware_updates.order_by('spvValue')
+    elif group_by == 'syncState':
+        firmware_updates = firmware_updates.order_by('syncState')
+    elif group_by == 'confrigDownload':
+        firmware_updates = firmware_updates.order_by('confrigDownload')
 
     if request.method == 'POST':
         selected_ids = request.POST.getlist('selected_firmware_updates')
@@ -471,10 +475,17 @@ def display_firmware_updates(request):
         new_value = request.POST.get('new_value')
 
         # Update the selected entries based on the chosen feature
-        if edit_feature == 'spvValue':
+        if edit_feature == 'firmware_version':
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(firmware_version=new_value)
+        elif edit_feature == 'fileDownload':
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(fileDownload=new_value)
+        elif edit_feature == 'spvValue':
             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_value)
-        elif edit_feature == 'batteryValue':
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(batteryValue=new_value)
+        elif edit_feature == 'syncState':
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(syncState=new_value)
+        elif edit_feature == 'confrigDownload':
+            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(confrigDownload=new_value)
+        
 
     context = {
         'firmware_updates': firmware_updates,

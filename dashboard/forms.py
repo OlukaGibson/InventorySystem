@@ -72,12 +72,12 @@ class MyForm(forms.Form):
 
 #the edits
 
-class SPVForm(forms.ModelForm):
-    class Meta:
-        model = FirmwareUpdate
-        fields = ['spvValue']
+# class SPVForm(forms.ModelForm):
+#     class Meta:
+#         model = FirmwareUpdate
+#         fields = ['spvValue']
 
-class BatteryForm(forms.ModelForm):
-    class Meta:
-        model = FirmwareUpdate
-        fields = ['batteryValue']
+# class BatteryForm(forms.ModelForm):
+#     class Meta:
+#         model = FirmwareUpdate
+#         fields = ['batteryValue']
