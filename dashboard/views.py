@@ -6,12 +6,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm#, SPVForm, BatteryForm
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
 from datetime import datetime, timedelta
-from apiapp.models import FirmwareUpdate, FirmwareUpdateHistory, Device
+from apiapp.models import FirmwareUpdate, FirmwareUpdateHistory, Device, Firmware
+from django.http import FileResponse
+
 
 # Create your views here.
 
@@ -451,7 +453,6 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
-
 @login_required
 def display_firmware_updates(request):
     firmware_updates = FirmwareUpdate.objects.select_related('device_name').all().order_by('-device_name')
@@ -470,6 +471,11 @@ def display_firmware_updates(request):
         firmware_updates = firmware_updates.order_by('confrigDownload')
 
     if request.method == 'POST':
+        fileForm = UploadFileForm(request.POST, request.FILES)
+        if fileForm.is_valid():
+            fileForm.save()
+            return redirect('display_firmware_updates')
+        
         selected_ids = request.POST.getlist('selected_firmware_updates')
         edit_feature = request.POST.get('edit_feature')
         new_value = request.POST.get('new_value')
@@ -490,7 +496,57 @@ def display_firmware_updates(request):
     context = {
         'firmware_updates': firmware_updates,
         'group_by': group_by,
+        'fileForm': fileForm,
     }
 
     return render(request, 'dashboard/firmware_update.html', context)
+
+
+
+# @login_required
+# def upload_file(request):
+#     if request.method == 'POST':
+#         form = UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('display_firmware_updates')
+#     else:
+#         form = UploadFileForm()
+#     return render(request, 'dashboard/upload_file.html', {'form': form})
+
+# def details(request,pk):
+#     item = Stock.objects.get(id=pk)
+#     if request.method == 'POST':
+#         newStockForm = NewStockForm(request.POST, instance=item)
+#         dispenseForm = DispenseForm(request.POST, instance=item)
+#         if newStockForm.is_valid():
+#             history = StockHistory.objects.create(item_name=item.item_name,
+#                                   stock_in=item.stock_in,
+#                                   stock_out=item.stock_out,
+#                                   stock_in_date=item.stock_in_date,
+#                                   stock_out_date=item.stock_out_date)
+#             history.save()
+#             newStockForm.save()
+#             return redirect('products')
+        
+#         if dispenseForm.is_valid():
+#             history = StockHistory.objects.create(item_name=item.item_name,
+#                                   stock_in=item.stock_in,
+#                                   stock_out=item.stock_out,
+#                                   stock_in_date=item.stock_in_date,
+#                                   stock_out_date=item.stock_out_date)
+#             history.save()
+#             dispenseForm.save()
+#             return redirect('products')
+        
+#     else:
+#         newStockForm = NewStockForm(instance=item)
+#         dispenseForm = DispenseForm(instance=item)
+#     context = {
+#         'newStockForm' : newStockForm,
+#         'dispenseForm' : dispenseForm,
+#         'item' : item
+#     }
+#     return render(request,'dashboard/details.html',context)
+
 
