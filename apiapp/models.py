@@ -27,7 +27,7 @@ class FirmwareUpdate(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.firmware_version
+        return self.device_name
     
 class FirmwareUpdateHistory(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
@@ -40,5 +40,5 @@ class FirmwareUpdateHistory(models.Model):
     history_date = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.firmware_version
+        return self.device_name
     
