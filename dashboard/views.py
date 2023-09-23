@@ -460,7 +460,7 @@ def display_firmware_updates(request):
     group_by = request.GET.get('group_by')
 
     if group_by == 'firmware_version':
-        firmware_updates = firmware_updates.order_by('firmware_version')
+        firmware_updates = firmware_updates.order_by('firmware__firmware_version') 
     elif group_by == 'fileDownload':
         firmware_updates = firmware_updates.order_by('fileDownload')
     elif group_by == 'spvValue':
