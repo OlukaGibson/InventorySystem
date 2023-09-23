@@ -40,19 +40,23 @@ class UpdateSensorDataView(APIView):
         firmware_update.spvValue = spvValue
         firmware_update.save()
 
-        # Return details of the device and a link to download the firmware file
+        # Prepare the response data
         data = {
             'device_id': device.id,
             'device_name': device.device_name,
             'channel_id': device.channel_id,
             'firmware_version': firmware_update.firmware.firmware_version,
-            'file_download_link': request.build_absolute_uri(firmware_update.firmware.firmware_version_file.url)
         }
 
-        return Response(
-            {
-                'message': 'SPV value updated successfully',
-                'data': data
-            },
-            status=200
-        )
+        # Construct the file download response
+        file_response = FileResponse(open(firmware_update.firmware.firmware_version_file.path, 'rb'))
+
+        # Set the Content-Disposition header to specify the filename
+        file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
+
+        # Return a dictionary containing both data and the file response
+        return {
+            'message': 'SPV value updated successfully',
+            'data': data,
+            'file': file_response
+        }
