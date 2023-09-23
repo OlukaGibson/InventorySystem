@@ -27,19 +27,8 @@ class FirmwareUpdate(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.spvValue
+        return f"Firmware Update for Device: {self.device_name.device_name}, Firmware: {self.firmware.firmware_version}"
 
-class FirmwareUpdateStats(models.Model):
-    device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
-    firmware = models.ForeignKey(Firmware, on_delete=models.CASCADE)
-    fileDownload = models.IntegerField(default=0, null=True)
-    spvValue = models.PositiveIntegerField(default=0, null=True)
-    syncState = models.IntegerField(default=0, null=True)
-    confrigDownload = models.IntegerField(default=0, null=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.spvValue    
 class FirmwareUpdateHistory(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
     firmware = models.ForeignKey(Firmware, on_delete=models.CASCADE)
@@ -51,5 +40,5 @@ class FirmwareUpdateHistory(models.Model):
     history_date = models.DateTimeField(auto_created=True, null=True)
 
     def __str__(self):
-        return self.spvValue
+        return f"History for Device: {self.device_name.device_name}, Firmware: {self.firmware.firmware_version}"
     
