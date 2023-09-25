@@ -1,8 +1,6 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from django.http import FileResponse
 from django.http import JsonResponse
-
 from .models import FirmwareUpdate, Device, Firmware
 
 class UpdateSensorDataView(APIView):
@@ -10,7 +8,7 @@ class UpdateSensorDataView(APIView):
         try:
             spvValue = int(request.query_params.get('spvValue'))
         except (ValueError, TypeError):
-            return Response(
+            return JsonResponse(
                 {
                     'error': 'Invalid input data'
                 },
@@ -20,7 +18,7 @@ class UpdateSensorDataView(APIView):
         try:
             device = Device.objects.get(pk=device_id)
         except Device.DoesNotExist:
-            return Response(
+            return JsonResponse(
                 {
                     'error': 'Device not found'
                 },
@@ -31,7 +29,7 @@ class UpdateSensorDataView(APIView):
         try:
             firmware_update = FirmwareUpdate.objects.filter(device_name=device).latest('uploaded_at')
         except FirmwareUpdate.DoesNotExist:
-            return Response(
+            return JsonResponse(
                 {
                     'error': 'Firmware update not found for this device'
                 },
@@ -56,15 +54,17 @@ class UpdateSensorDataView(APIView):
         # Set the Content-Disposition header to specify the filename for download
         file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
 
-        # Construct the JSON response with the JSON data
+        # Construct the JSON response with the JSON data and add file content
         response_data = {
             'message': 'SPV value updated successfully',
             'data': data,
+            'file': file_response.content
         }
 
-        # Return both the JSON data and the file response
-        response = JsonResponse(response_data, headers={'X-Accel-Redirect': file_response.url})
+        # Return the JSON data along with the file content
+        response = JsonResponse(response_data)
         return response
+
 
 
 # from rest_framework.views import APIView
