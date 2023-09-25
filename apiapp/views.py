@@ -54,10 +54,10 @@ class UpdateSensorDataView(APIView):
             'message': 'SPV value updated successfully',
             'data': data,
         }
-        response = Response(response_data)
+        # response = Response(response_data)
 
-        # Introduce a 5-second delay
-        time.sleep(5)
+        # # Introduce a 5-second delay
+        # time.sleep(5)
 
         # Create a file response for the firmware version file
         file_response = FileResponse(open(firmware_update.firmware.firmware_version_file.path, 'rb'))
@@ -66,7 +66,7 @@ class UpdateSensorDataView(APIView):
         file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
 
         # Return the file response
-        return file_response
+        return  response_data, file_response
 
 
 # # from rest_framework.views import APIView
