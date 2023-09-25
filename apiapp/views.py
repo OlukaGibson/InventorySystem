@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from django.http import FileResponse
 from django.http import JsonResponse
+
 from .models import FirmwareUpdate, Device, Firmware
 
 class UpdateSensorDataView(APIView):
@@ -54,14 +55,14 @@ class UpdateSensorDataView(APIView):
         # Set the Content-Disposition header to specify the filename for download
         file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
 
-        # Construct the JSON response with the JSON data and add file content
+        # Construct the JSON response with the JSON data and add file streaming content
         response_data = {
             'message': 'SPV value updated successfully',
             'data': data,
-            'file': file_response.content
+            'file_streaming_content': file_response.streaming_content
         }
 
-        # Return the JSON data along with the file content
+        # Return the JSON data along with the file streaming content
         response = JsonResponse(response_data)
         return response
 
