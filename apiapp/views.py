@@ -65,15 +65,15 @@ from .models import FirmwareUpdate, Device, Firmware
 
 class UpdateSensorDataView(APIView):
     def get(self, request, device_id, *args, **kwargs):
-        try:
-            spvValue = int(request.query_params.get('spvValue'))
-        except (ValueError, TypeError):
-            return Response(
-                {
-                    'error': 'Invalid input data'
-                },
-                status=400
-            )
+        # try:
+        #     spvValue = int(request.query_params.get('spvValue'))
+        # except (ValueError, TypeError):
+        #     return Response(
+        #         {
+        #             'error': 'Invalid input data'
+        #         },
+        #         status=400
+        #     )
 
         try:
             device = Device.objects.get(pk=device_id)
@@ -97,7 +97,7 @@ class UpdateSensorDataView(APIView):
             )
 
         # Update the spvValue
-        firmware_update.spvValue = spvValue
+        # firmware_update.spvValue = spvValue
         
 
         if firmware_update.fileDownload == 1:
