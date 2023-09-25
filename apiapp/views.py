@@ -103,6 +103,18 @@ class UpdateSensorDataView(APIView):
         if firmware_update.fileDownload == 1:
             firmware_update.fileDownload = 0
             firmware_update.save()
+            # Create a file response for the firmware version file
+            file_response = FileResponse(open(firmware_update.firmware.firmware_version_file.path, 'rb'))
+
+            # Set the Content-Disposition header to specify the filename for download
+            file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
+
+            # Return the file response along with the data
+            return file_response
+
+        else:
+            firmware_update.fileDownload = 1
+            firmware_update.save()
             # Prepare the response data
             data = {
                 'device_name': device.device_name,
@@ -120,13 +132,4 @@ class UpdateSensorDataView(APIView):
                 },
                 status=200
             )
-        else:
-            firmware_update.save()
-            # Create a file response for the firmware version file
-            file_response = FileResponse(open(firmware_update.firmware.firmware_version_file.path, 'rb'))
-
-            # Set the Content-Disposition header to specify the filename for download
-            file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
-
-            # Return the file response along with the data
-            return file_response
+            
