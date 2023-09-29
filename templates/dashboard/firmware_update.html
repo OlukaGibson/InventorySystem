@@ -75,7 +75,7 @@
                     {% csrf_token %}
                 <div class="row my-4">
                     <div class="col-md-4">
-                        <label>Select the feature to edit:</label>
+                        <label>Select the feature to edit:</label><br>
                         <input type="radio" name="edit_feature" value="firmware_version"> Firmware Version<br>
                         <input type="radio" name="edit_feature" value="syncState"> Sync State<br>
                         <input type="radio" name="edit_feature" value="spvValue"> SPV Value<br>
@@ -138,9 +138,9 @@
                                 {% for firmware_update in firmware_updates %}
                                 <tr>
                                     <th scope="row"><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></th>
-                                    <td>{{ firmware_update.device_name }}</td>
-                                    <td>{{ firmware_update.device_name__channel_id }}</td>
-                                    <td>{{ firmware_update.firmware__firmware_version  }}</td>
+                                    <td>{{ firmware_update.device_name.device_name }}</td>
+                                    <td>{{ firmware_update.device_name.channel_id }}</td>
+                                    <td>{{ firmware_update.firmware.firmware_version   }}</td>
                                     <td>{{ firmware_update.fileDownload }}</td>
                                     <td>{{ firmware_update.spvValue }}</td>
                                     <td>{{ firmware_update.syncState }}</td>
