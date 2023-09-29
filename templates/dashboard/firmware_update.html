@@ -81,14 +81,14 @@
                         <input type="radio" name="edit_feature" value="spvValue"> SPV Value<br>
                         <input type="radio" name="edit_feature" value="confrigDownload"> Confriguration Download<br>
                         <br>
-                        <label>Enter the new value:</label>
+                        <label>Enter the new value:</label><br>
                         <input type="number" name="new_value">
                         <br>
                         <input type="submit" value="Apply Changes" class="btn btn-primary">
                         <br><br>
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            {{ fileForm.as_p }}
+                            {{ fileForm }}
                             <button type="submit">Upload</button>
                         </form>
                         <br>
