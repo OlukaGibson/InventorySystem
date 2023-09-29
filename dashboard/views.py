@@ -455,7 +455,7 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.select_related('device_name','channel_id').all().order_by('-device_name')
+    firmware_updates = FirmwareUpdate.objects.select_related('device_name','firmware').all().order_by('-device_name')
 
     group_by = request.GET.get('group_by')
 

@@ -139,8 +139,8 @@
                                 <tr>
                                     <th scope="row"><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></th>
                                     <td>{{ firmware_update.device_name }}</td>
-                                    <td>{{ firmware_update.channel_id }}</td>
-                                    <td>{{ firmware_update.firmware_version }}</td>
+                                    <td>{{ firmware_update.device_name__channel_id }}</td>
+                                    <td>{{ firmware_update.firmware__firmware_version  }}</td>
                                     <td>{{ firmware_update.fileDownload }}</td>
                                     <td>{{ firmware_update.spvValue }}</td>
                                     <td>{{ firmware_update.syncState }}</td>
