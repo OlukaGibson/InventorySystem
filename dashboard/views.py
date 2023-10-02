@@ -453,51 +453,61 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
+
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.select_related('device_name','firmware').all().order_by('-device_name')
-
-    group_by = request.GET.get('group_by')
-
-    if group_by == 'firmware_version':
-        firmware_updates = firmware_updates.order_by('firmware__firmware_version') 
-    elif group_by == 'fileDownload':
-        firmware_updates = firmware_updates.order_by('fileDownload')
-    elif group_by == 'spvValue':
-        firmware_updates = firmware_updates.order_by('spvValue')
-    elif group_by == 'syncState':
-        firmware_updates = firmware_updates.order_by('syncState')
-    elif group_by == 'confrigDownload':
-        firmware_updates = firmware_updates.order_by('confrigDownload')
-
-    if request.method == 'POST':
-        fileForm = UploadFileForm(request.POST, request.FILES)
-        if fileForm.is_valid():
-            fileForm.save()
-            return redirect('display_firmware_updates')
-        
-        selected_ids = request.POST.getlist('selected_firmware_updates')
-        edit_feature = request.POST.get('edit_feature')
-        new_value = request.POST.get('new_value')
-
-        # Update the selected entries based on the chosen feature
-        if edit_feature == 'firmware_version':
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(firmware_version=new_value)
-        elif edit_feature == 'fileDownload':
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(fileDownload=new_value)
-        elif edit_feature == 'spvValue':
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_value)
-        elif edit_feature == 'syncState':
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(syncState=new_value)
-        elif edit_feature == 'confrigDownload':
-            FirmwareUpdate.objects.filter(pk__in=selected_ids).update(confrigDownload=new_value)
-        
-
+    firmware_updates = FirmwareUpdate.objects.all()
     context = {
         'firmware_updates': firmware_updates,
-        'group_by': group_by,
-        'fileForm': UploadFileForm(),
     }
-
     return render(request, 'dashboard/firmware_update.html', context)
+
+
+# @login_required
+# def display_firmware_updates(request):
+#     firmware_updates = FirmwareUpdate.objects.select_related('device_name','firmware').all().order_by('-device_name')
+
+#     group_by = request.GET.get('group_by')
+
+#     if group_by == 'firmware_version':
+#         firmware_updates = firmware_updates.order_by('firmware__firmware_version') 
+#     elif group_by == 'fileDownload':
+#         firmware_updates = firmware_updates.order_by('fileDownload')
+#     elif group_by == 'spvValue':
+#         firmware_updates = firmware_updates.order_by('spvValue')
+#     elif group_by == 'syncState':
+#         firmware_updates = firmware_updates.order_by('syncState')
+#     elif group_by == 'confrigDownload':
+#         firmware_updates = firmware_updates.order_by('confrigDownload')
+
+#     if request.method == 'POST':
+#         fileForm = UploadFileForm(request.POST, request.FILES)
+#         if fileForm.is_valid():
+#             fileForm.save()
+#             return redirect('display_firmware_updates')
+        
+#         selected_ids = request.POST.getlist('selected_firmware_updates')
+#         edit_feature = request.POST.get('edit_feature')
+#         new_value = request.POST.get('new_value')
+
+#         # Update the selected entries based on the chosen feature
+#         if edit_feature == 'firmware_version':
+#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(firmware_version=new_value)
+#         elif edit_feature == 'fileDownload':
+#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(fileDownload=new_value)
+#         elif edit_feature == 'spvValue':
+#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_value)
+#         elif edit_feature == 'syncState':
+#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(syncState=new_value)
+#         elif edit_feature == 'confrigDownload':
+#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(confrigDownload=new_value)
+        
+
+#     context = {
+#         'firmware_updates': firmware_updates,
+#         'group_by': group_by,
+#         'fileForm': UploadFileForm(),
+#     }
+
+#     return render(request, 'dashboard/firmware_update.html', context)
 

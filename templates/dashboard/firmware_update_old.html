@@ -74,7 +74,53 @@
                 <form method="post" action="{% url 'display_firmware_updates' %}">
                     {% csrf_token %}
                 <div class="row my-4">
-                    <div class="col-md-10">
+                    <div class="col-md-4">
+                        <label>Select the feature to edit:</label><br>
+                        <input type="radio" name="edit_feature" value="firmware_version"> Firmware Version<br>
+                        <input type="radio" name="edit_feature" value="syncState"> Sync State<br>
+                        <input type="radio" name="edit_feature" value="spvValue"> SPV Value<br>
+                        <input type="radio" name="edit_feature" value="confrigDownload"> Confriguration Download<br>
+                        <br>
+                        <label>Enter the new value:</label><br>
+                        <input type="number" name="new_value">
+                        <br>
+                        <input type="submit" value="Apply Changes" class="btn btn-primary">
+                        <br><br>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ fileForm }}
+                            <button type="submit">Upload</button>
+                        </form>
+                        <br>
+                        
+                    </div>
+                    <div class="col-md-8">
+                        <a href="?group_by=firmware_version">
+                            <button type="button" class="btn btn-primary">
+                                Firmware Version
+                            </button>
+                        </a>      
+                        <a href="?group_by=fileDownload">
+                            <button type="button" class="btn btn-primary">
+                                File Download State
+                            </button>
+                        </a>
+                        <a href="?group_by=spvValue">
+                            <button type="button" class="btn btn-primary">
+                                SPV Value
+                            </button>
+                        </a>
+                        <a href="?group_by=syncState">
+                            <button type="button" class="btn btn-primary">
+                                Sync State
+                            </button>
+                        </a>
+                        <a href="?group_by=confrigDownload">
+                            <button type="button" class="btn btn-primary">
+                                Confrig Download
+                            </button>
+                        </a>
+                        <br><br>
                         <table class="table bg-white">
                             <thead class="bg-primary">
                                 <tr class="text-white">
@@ -82,9 +128,10 @@
                                     <th scope="col">Device Name</th>
                                     <th scope="col">Channel Id</th>
                                     <th scope="col">Firmware Version</th>
-                                    {% for field in firmware_update.fields.all %}
-                                        <th scope="col">{{ field.field_name }}</th>
-                                    {% endfor %}
+                                    <th scope="col">File Download</th>
+                                    <th scope="col">SPV Value</th>
+                                    <th scope="col">Sync State</th>
+                                    <th scope="col">Confriguration Download</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,9 +141,10 @@
                                     <td>{{ firmware_update.device_name.device_name }}</td>
                                     <td>{{ firmware_update.device_name.channel_id }}</td>
                                     <td>{{ firmware_update.firmware.firmware_version   }}</td>
-                                    {% for field in firmware_update.fields.all %}
-                                        <td>{{ field.field_value }}</td>
-                                    {% endfor %}
+                                    <td>{{ firmware_update.fileDownload }}</td>
+                                    <td>{{ firmware_update.spvValue }}</td>
+                                    <td>{{ firmware_update.syncState }}</td>
+                                    <td>{{ firmware_update.confrigDownload }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
