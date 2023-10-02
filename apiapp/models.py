@@ -1,5 +1,6 @@
 
 from django.db import models
+from django.core.validators import MinValueValidator
 
 class Device(models.Model):
     device_name = models.CharField(max_length=50,default='Device Name', null=True)
@@ -26,7 +27,7 @@ class Fields(models.Model):
 class FirmwareUpdate(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
     firmware = models.ForeignKey(Firmware, on_delete=models.CASCADE)
-    fields = models.ManyToManyField(Fields, through='FirmwareUpdateField')
+    fields = models.ManyToManyField(Fields, through='FirmwareUpdateField', validators=[MinValueValidator(1)])
     # fileDownload = models.IntegerField(default=0, null=True)
     # spvValue = models.PositiveIntegerField(default=0, null=True)
     # syncState = models.IntegerField(default=0, null=True)
