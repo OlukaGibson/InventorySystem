@@ -456,9 +456,11 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
+    fields = Fields.objects.all()
     firmware_update_fields = FirmwareUpdateField.objects.select_related('firmware_update__device_name', 'firmware_update__firmware', 'field')
 
     context = {
+        'fields': fields,
         'firmware_update_fields': firmware_update_fields,
     }
     

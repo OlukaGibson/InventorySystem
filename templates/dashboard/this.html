@@ -1,0 +1,36 @@
+<!-- firmware_update_field_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firmware Update Fields</title>
+</head>
+<body>
+    <h1>Firmware Update Fields</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Device Name</th>
+                <th>Channel ID</th>
+                <th>Firmware Version</th>
+                <th>Field Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for firmware_update_field in firmware_update_fields %}
+                <tr>
+                    <td>{{ firmware_update_field.firmware_update.device_name.device_name }}</td>
+                    <td>{{ firmware_update_field.firmware_update.device_name.channel_id }}</td>
+                    <td>{{ firmware_update_field.firmware_update.firmware.firmware_version }}</td>
+                    <td>{{ firmware_update_field.field.field_name }}</td>
+                    <td>{{ firmware_update_field.value }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No firmware update fields available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
