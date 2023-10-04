@@ -99,6 +99,8 @@
                                         {% for field in fields %}
                                             {% if field.field_name == firmware_update_field.field.field_name %}
                                                 <td>{{ firmware_update_field.value }}</td>
+                                            {% else %}
+                                                <td></td>
                                             {% endif %}
                                         {% endfor %}
                                     </tr>
