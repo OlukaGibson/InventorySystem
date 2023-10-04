@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
 from datetime import datetime, timedelta
-from apiapp.models import FirmwareUpdate, FirmwareUpdateHistory, Device, Firmware
+from apiapp.models import FirmwareUpdate, FirmwareUpdateHistory, Device, Firmware, FirmwareUpdateField, Fields
 from django.http import FileResponse
 
 
@@ -456,10 +456,12 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.all()
+    firmware_update_fields = FirmwareUpdateField.objects.select_related('firmware_update__device_name', 'firmware_update__firmware', 'field')
+
     context = {
-        'firmware_updates': firmware_updates,
+        'firmware_update_fields': firmware_update_fields,
     }
+    
     return render(request, 'dashboard/firmware_update.html', context)
 
 
