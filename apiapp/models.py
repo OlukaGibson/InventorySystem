@@ -20,6 +20,8 @@ class Firmware(models.Model):
 
 class Fields(models.Model):
     field_name = models.CharField(max_length=50, null=True)
+    edit = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return self.field_name
