@@ -27,7 +27,7 @@ class Fields(models.Model):
 class FirmwareUpdate(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
     firmware = models.ForeignKey(Firmware, on_delete=models.CASCADE)
-    fields = models.ManyToManyField(Fields, through='FirmwareUpdateField', validators=[MinValueValidator(1)])
+    fields = models.ManyToManyField(Fields, through='FirmwareUpdateField', blank=False)
     # fileDownload = models.IntegerField(default=0, null=True)
     # spvValue = models.PositiveIntegerField(default=0, null=True)
     # syncState = models.IntegerField(default=0, null=True)
@@ -43,7 +43,7 @@ class FirmwareUpdateField(models.Model):
     value = models.CharField(max_length=255)  # You can change this data type as needed
 
     def __str__(self):
-        return f"{self.field.name} - {self.firmware_update.name}"
+        return f"{self.field.field_name} - {self.firmware_update.id}"
 
 class FirmwareUpdateHistory(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
