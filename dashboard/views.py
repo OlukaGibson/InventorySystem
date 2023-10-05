@@ -456,15 +456,45 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    fields = Fields.objects.all()
-    firmware_update_fields = FirmwareUpdateField.objects.select_related('firmware_update__device_name', 'firmware_update__firmware', 'field')
+    # Fetch the data you need from your models
+    devices = Device.objects.all()
+    firmware_updates = FirmwareUpdate.objects.filter(device_name__in=devices)
+    fields_data = FirmwareUpdateField.objects.filter(firmware_update__in=firmware_updates)
 
+    # Create a list of dictionaries to hold device data along with associated fields
+    device_data = []
+    for device in devices:
+        device_info = {
+            'device_name': device.device_name,
+            'channel_id': device.channel_id,
+            'firmware_version': '',
+        }
+        fields = fields_data.filter(firmware_update__device_name=device)
+        for field in fields:
+            device_info[field.field.field_name] = field.value
+        device_data.append(device_info)    
     context = {
-        'fields': fields,
-        'firmware_update_fields': firmware_update_fields,
+        'device_data': device_data
     }
     
     return render(request, 'dashboard/firmware_update.html', context)
+
+
+# @login_required
+# def display_firmware_updates(request):
+#     fields = Fields.objects.all()
+#     firmware_update_fields = FirmwareUpdateField.objects.select_related('firmware_update__device_name', 
+#                                                                         'firmware_update__firmware', 'field'
+#                                                                         )
+
+    
+    
+#     context = {
+#         'fields': fields,
+#         'firmware_update_fields': firmware_update_fields,
+#     }
+    
+#     return render(request, 'dashboard/firmware_update.html', context)
 
 
 # @login_required

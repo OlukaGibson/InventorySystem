@@ -79,28 +79,25 @@
                                     <th scope="col">Device Name</th>
                                     <th scope="col">Channel Id</th>
                                     <th scope="col">Firmware Version</th>
-                                    {% for field in fields %}
-                                        <th scope="col">{{ field.field_name }}</th>
-                                    {% endfor %}
+                                    {% for device in device_data %}
+                                        {% for field_name, _ in device.items %}
+                                            {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
+                                                <th>{{ field_name }}</th>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for firmware_update_field in firmware_update_fields %}
+                                {% for device in device_data %}
                                     <tr>
-                                        <td>
-                                            {{ firmware_update_field.firmware_update.device_name.device_name }}
-                                        </td>
-                                        <td>
-                                            {{ firmware_update_field.firmware_update.device_name.channel_id }}
-                                        </td>
-                                        <td>
-                                            {{ firmware_update_field.firmware_update.firmware.firmware_version }}
-                                        </td>
-                                        {% for field in fields %}
-                                            {% if field.field_name == firmware_update_field.field.field_name %}
-                                                <td>{{ firmware_update_field.value }}</td>
-                                            {% else %}
-                                                <td></td>
+                                        <td>{{ device.device_name }}</td>
+                                        <td>{{ device.channel_id }}</td>
+                                        <td>{{ device.firmware_version }}</td>
+                                        <!-- Loop through fields and display values -->
+                                        {% for field_name, field_value in device.items %}
+                                            {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
+                                                <td>{{ field_value }}</td>
                                             {% endif %}
                                         {% endfor %}
                                     </tr>
