@@ -26,7 +26,7 @@
                     <td>{{ device.firmware_version }}</td>
                     <!-- Loop through fields_to_display and display values -->
                     {% for field_name in fields_to_display %}
-                        <td>{{ device[field_name] }}</td>
+                        <td>{{ device.field_name }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}
