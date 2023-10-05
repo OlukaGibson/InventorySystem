@@ -20,17 +20,16 @@
         <tbody>
             <!-- Loop through device_data and display device and field values -->
             {% for device in device_data %}
-                <tr>
-                    <td>{{ device.device_name }}</td>
-                    <td>{{ device.channel_id }}</td>
-                    <td>{{ device.firmware_version }}</td>
-                    <!-- Loop through fields_to_display and display values -->
-                    {% for field_name in fields_to_display %}
-                        <td>{{ device.field_name }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
+            <tr>
+                <td>{{ device.device_name }}</td>
+                <td>{{ device.channel_id }}</td>
+                <td>{{ device.firmware_version }}</td>
+                <!-- Loop through fields_to_display and display values -->
+                {% for field_name in fields_to_display %}
+                    <td>{{ device[field_name] }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
