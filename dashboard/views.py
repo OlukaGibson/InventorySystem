@@ -477,7 +477,7 @@ def display_firmware_updates(request):
         'device_data': device_data
     }
     
-    return render(request, 'dashboard/firmware_update.html', context)
+    return render(request, 'dashboard/this.html', context)
 
 
 # @login_required

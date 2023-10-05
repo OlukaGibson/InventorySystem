@@ -1,33 +1,39 @@
-<!-- firmware_update_field_list.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Firmware Update Fields</title>
+    <title>Device List</title>
 </head>
 <body>
-    <h1>Firmware Update Fields</h1>
-    <table>
+    <h1>Device List</h1>
+    <table border="1">
         <thead>
             <tr>
                 <th>Device Name</th>
                 <th>Channel ID</th>
                 <th>Firmware Version</th>
-                <th>Field Name</th>
-                <th>Value</th>
+                <!-- Add table headers for fields -->
+                {% for device in device_data %}
+                    {% for field_name, _ in device.items %}
+                        {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
+                            <th>{{ field_name }}</th>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
             </tr>
         </thead>
         <tbody>
-            {% for firmware_update_field in firmware_update_fields %}
+            <!-- Loop through device_data and display device and field values -->
+            {% for device in device_data %}
                 <tr>
-                    <td>{{ firmware_update_field.firmware_update.device_name.device_name }}</td>
-                    <td>{{ firmware_update_field.firmware_update.device_name.channel_id }}</td>
-                    <td>{{ firmware_update_field.firmware_update.firmware.firmware_version }}</td>
-                    <td>{{ firmware_update_field.field.field_name }}</td>
-                    <td>{{ firmware_update_field.value }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="5">No firmware update fields available.</td>
+                    <td>{{ device.device_name }}</td>
+                    <td>{{ device.channel_id }}</td>
+                    <td>{{ device.firmware_version }}</td>
+                    <!-- Loop through fields and display values -->
+                    {% for field_name, field_value in device.items %}
+                        {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
+                            <td>{{ field_value }}</td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>
