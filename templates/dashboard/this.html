@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Device List</title>
+    <title>Firmware Updates</title>
 </head>
 <body>
-    <h1>Device List</h1>
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th>Device Name</th>
                 <th>Channel ID</th>
                 <th>Firmware Version</th>
-                <!-- Add table headers for fields -->
-                {% for field_name in fields_to_display %}
-                    <th>{{ field_name }}</th>
-                {% endfor %}
+                <th>Field Values</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Loop through device_data and display device and field values -->
-            {% for device in device_data %}
+            {% for device_name, channel_id, firmware_version, fields in zip(device_names, channel_ids, firmware_versions, display_fields) %}
             <tr>
-                <td>{{ device.device_name }}</td>
-                <td>{{ device.channel_id }}</td>
-                <td>{{ device.firmware_version }}</td>
-                <!-- Loop through fields_to_display and display values -->
-                {% for field_name in fields_to_display %}
-                    <td>{{ device.field_name }}</td>
-                {% endfor %}
+                <td>{{ device_name }}</td>
+                <td>{{ channel_id }}</td>
+                <td>{{ firmware_version }}</td>
+                <td>
+                    <ul>
+                        {% for field_name, field_value in fields %}
+                        <li>{{ field_name }}: {{ field_value }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>
