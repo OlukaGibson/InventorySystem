@@ -76,6 +76,7 @@
                         <table class="table bg-white">
                             <thead class="bg-primary">
                                 <tr class="text-white">
+                                    <th scope="col">Number</th>
                                     <th scope="col">Device Name</th>
                                     <th scope="col">Channel Id</th>
                                     <th scope="col">Firmware Version</th>
@@ -85,13 +86,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for device in device_data %}
-            <tr>
-                <td>{{ device.device_name }}</td>
-                <td>{{ device.channel_id }}</td>
-                <td>{{ device.firmware_version }}</td>
-            </tr>
-        {% endfor %}
+                                {% for device in devices %}
+                                    <tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>{{ device.device_name }}</td>
+                                        <td>{{ device.channel_id }}</td>
+                                        <td>{{ device.firmware_version }}</td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
