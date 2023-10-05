@@ -449,36 +449,39 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    # Fetch the data you need from your models
-    devices = Device.objects.all()
-    firmware_updates = FirmwareUpdate.objects.filter(device_name__in=devices)
-    
-    # Create a list of dictionaries to hold device data along with associated fields
-    device_data = []
-    for device in devices:
-        device_info = {
-            'device_name': device.device_name,
-            'channel_id': device.channel_id,
-            'firmware_version': '',
-        }
-        firmware = firmware_updates.filter(device_name=device).first()
-        if firmware:
-            device_info['firmware_version'] = firmware.firmware.firmware_version
-            
-            # Retrieve field values for this firmware update
-            fields = FirmwareUpdateField.objects.filter(firmware_update=firmware)
-            for field in fields:
-                device_info[field.field.field_name] = field.value
+    firmware_update_fields = FirmwareUpdateField.objects.all().distinct('firmware_update__device_name')
 
-        device_data.append(device_info)
+    device_names = []
+    channel_ids = []
+    firmware_versions = []
+    display_fields = []
 
-    # Filter out the fields you want to display in the template
-    fields_to_display = [field_name for field_name in device_data[0].keys() if field_name not in ['device_name', 'channel_id', 'firmware_version']]
+    for firmware_update_field in firmware_update_fields:
+        single_field_values = []
+        field_names = []
+        device_name = firmware_update_field.firmware_update.device_name
+        channel_id = firmware_update_field.firmware_update.device_name.channel_id
+        firmware_version = firmware_update_field.firmware_update.firmware.firmware_version
+        
+        the_fields = FirmwareUpdateField.objects.all()
+        for the_field in the_fields:
+            if the_field.firmware_update.device_name == device_name:
+                single_field_values.append(the_field.value)
+                field_names.append(the_field.field.field_name) 
+        
+        device_names.append(device_name)
+        channel_ids.append(channel_id)
+        firmware_versions.append(firmware_version)
+        display_fields.append(single_field_values)
 
     context = {
-        'device_data': device_data,
-        'fields_to_display': fields_to_display,
+        'device_names': device_names,
+        'channel_ids': channel_ids,
+        'firmware_versions': firmware_versions,
+        'display_fields': display_fields,
+        'field_names': field_names,
     }
+
 
     return render(request, 'dashboard/firmware_update.html', context)
 
