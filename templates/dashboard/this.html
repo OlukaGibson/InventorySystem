@@ -12,12 +12,8 @@
                 <th>Channel ID</th>
                 <th>Firmware Version</th>
                 <!-- Add table headers for fields -->
-                {% for device in device_data %}
-                    {% for field_name, _ in device.items %}
-                        {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
-                            <th>{{ field_name }}</th>
-                        {% endif %}
-                    {% endfor %}
+                {% for field_name in fields_to_display %}
+                    <th>{{ field_name }}</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -28,11 +24,9 @@
                     <td>{{ device.device_name }}</td>
                     <td>{{ device.channel_id }}</td>
                     <td>{{ device.firmware_version }}</td>
-                    <!-- Loop through fields and display values -->
-                    {% for field_name, field_value in device.items %}
-                        {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
-                            <td>{{ field_value }}</td>
-                        {% endif %}
+                    <!-- Loop through fields_to_display and display values -->
+                    {% for field_name in fields_to_display %}
+                        <td>{{ device[field_name] }}</td>
                     {% endfor %}
                 </tr>
             {% endfor %}

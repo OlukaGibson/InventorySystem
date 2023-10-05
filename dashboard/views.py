@@ -453,7 +453,6 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
-
 @login_required
 def display_firmware_updates(request):
     # Fetch the data you need from your models
@@ -473,10 +472,15 @@ def display_firmware_updates(request):
         for field in fields:
             device_info[field.field.field_name] = field.value
         device_data.append(device_info)    
+
+    # Filter out the fields you want to display in the template
+    fields_to_display = [field_name for field_name in device_data[0].keys() if field_name not in ['device_name', 'channel_id', 'firmware_version']]
+
     context = {
-        'device_data': device_data
+        'device_data': device_data,
+        'fields_to_display': fields_to_display,
     }
-    
+
     return render(request, 'dashboard/this.html', context)
 
 
