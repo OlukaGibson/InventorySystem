@@ -453,14 +453,12 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
-
 @login_required
 def display_firmware_updates(request):
     # Fetch the data you need from your models
     devices = Device.objects.all()
     firmware_updates = FirmwareUpdate.objects.filter(device_name__in=devices)
-    fields_data = FirmwareUpdateField.objects.filter(firmware_update__in=firmware_updates)
-
+    
     # Create a list of dictionaries to hold device data along with associated fields
     device_data = []
     for device in devices:
@@ -472,10 +470,12 @@ def display_firmware_updates(request):
         firmware = firmware_updates.filter(device_name=device).first()
         if firmware:
             device_info['firmware_version'] = firmware.firmware.firmware_version
+            
+            # Retrieve field values for this firmware update
+            fields = FirmwareUpdateField.objects.filter(firmware_update=firmware)
+            for field in fields:
+                device_info[field.field.field_name] = field.value
 
-        fields = fields_data.filter(firmware_update__device_name=device)
-        for field in fields:
-            device_info[field.field.field_name] = field.value
         device_data.append(device_info)
 
     # Filter out the fields you want to display in the template
@@ -487,7 +487,6 @@ def display_firmware_updates(request):
     }
 
     return render(request, 'dashboard/this.html', context)
-
 
 
 # @login_required
