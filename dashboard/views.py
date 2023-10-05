@@ -460,16 +460,14 @@ def display_firmware_updates(request):
             'device_name': device.device_name,
             'channel_id': device.channel_id,
             'firmware_version': '',
+            for field in Fields.objects.all():
+                field.field_name: ''
         }
         firmware = firmware_updates.filter(device_name=device).first()
         if firmware:
             device_info['firmware_version'] = firmware.firmware.firmware_version
-            
-            # Retrieve field values for this firmware update
-            fields = FirmwareUpdateField.objects.filter(firmware_update=firmware)
-            for field in fields:
-                device_info[field.field.field_name] = field.value
 
+            
         device_data.append(device_info)
 
     # Filter out the fields you want to display in the template
