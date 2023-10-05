@@ -56,7 +56,6 @@ def reports_pcb(request):
             end_date = datetime.strptime(end_date, '%Y-%m-%d').date() + timedelta(days=1)  # Add 1 day to include the end date
             data = Production.objects.filter(phase='tunning',date_end__range=(start_date, end_date)).values('date_end__week').annotate(average=Avg('quantity_out'))
             weekly_averages = []
-#            item = Production.objects.all()
 
             for entry in data:
                 week = entry['date_end__week']
@@ -69,7 +68,6 @@ def reports_pcb(request):
 
     context = {
         'weekly_averages': weekly_averages,
-#        'item' :item,
     }
     return render(request, 'dashboard/reports_pcb.html', context)
 
@@ -84,7 +82,6 @@ def reports_communication_config(request):
             end_date = datetime.strptime(end_date, '%Y-%m-%d').date() + timedelta(days=1)  # Add 1 day to include the end date
             data = Production.objects.filter(phase='communication config',date_end__range=(start_date, end_date)).values('date_end__week').annotate(average=Avg('quantity_out'))
             weekly_averages = []
-#            item = Production.objects.all()
 
             for entry in data:
                 week = entry['date_end__week']
@@ -97,7 +94,6 @@ def reports_communication_config(request):
 
     context = {
         'weekly_averages': weekly_averages,
-#        'item' :item,
     }
     return render(request, 'dashboard/reports_communication_config.html', context)
 
@@ -112,7 +108,6 @@ def reports_correction(request):
             end_date = datetime.strptime(end_date, '%Y-%m-%d').date() + timedelta(days=1)  # Add 1 day to include the end date
             data = Production.objects.filter(phase='correction',date_end__range=(start_date, end_date)).values('date_end__week').annotate(average=Avg('quantity_out'))
             weekly_averages = []
-#            item = Production.objects.all()
 
             for entry in data:
                 week = entry['date_end__week']
@@ -125,7 +120,6 @@ def reports_correction(request):
 
     context = {
         'weekly_averages': weekly_averages,
-#        'item' :item,
     }
     return render(request, 'dashboard/reports_correction.html', context)
 
@@ -486,7 +480,7 @@ def display_firmware_updates(request):
         'fields_to_display': fields_to_display,
     }
 
-    return render(request, 'dashboard/this.html', context)
+    return render(request, 'dashboard/firmware_update.html', context)
 
 
 # @login_required

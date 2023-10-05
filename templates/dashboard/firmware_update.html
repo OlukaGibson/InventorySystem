@@ -79,13 +79,9 @@
                                     <th scope="col">Device Name</th>
                                     <th scope="col">Channel Id</th>
                                     <th scope="col">Firmware Version</th>
-                                    {% for device in device_data %}
-                                        {% for field_name, _ in device.items %}
-                                            {% if field_name not in ['device_name', 'channel_id', 'firmware_version'] %}
-                                                <th>{{ field_name }}</th>
-                                            {% endif %}
-                                        {% endfor %}
-                                        {% endfor %}
+                                    {% for field_name in fields_to_display %}
+                                        <th scope="col">{{ field_name }}</th>
+                                    {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
