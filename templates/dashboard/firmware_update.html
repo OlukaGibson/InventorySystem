@@ -86,12 +86,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for device_data in device_info % }
+                                {% for device in device_info %}
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
-                                        <td>{{ device_data.device_name }}</td>
-                                        <td>{{ device_data.channel_id }}</td>
-                                        <td>{{ device_data.firmware_version }}</td>
+                                        <td>{{ device.device_name }}</td>
+                                        <td>{{ device.channel_id }}</td>
+                                        <td>{{ device.firmware_version }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
