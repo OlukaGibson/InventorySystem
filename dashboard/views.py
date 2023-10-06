@@ -474,12 +474,15 @@ def display_firmware_updates(request):
         firmware_versions.append(firmware_version)
         display_fields.append(single_field_values)
 
+        device_info = zip(device_names, channel_ids, firmware_versions, display_fields)
+
     context = {
         'device_names': device_names,
         'channel_ids': channel_ids,
         'firmware_versions': firmware_versions,
         'display_fields': display_fields,
         'field_names': field_names,
+        'device_info': device_info,
     }
 
 
