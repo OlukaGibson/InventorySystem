@@ -486,7 +486,7 @@ def display_firmware_updates(request):
     }
 
 
-    return render(request, 'dashboard/this.html', context)
+    return render(request, 'dashboard/firmware_update.html', context)
 
 
 # @login_required
