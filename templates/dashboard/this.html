@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Firmware Updates</title>
+    <title>Firmware Update Fields</title>
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>Device Name</th>
-                <th>Channel ID</th>
-                <th>Firmware Version</th>
-                <th>Field Values</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for device_name, channel_id, firmware_version, fields in zip(device_names, channel_ids, firmware_versions, display_fields) %}
-            <tr>
-                <td>{{ device_name }}</td>
-                <td>{{ channel_id }}</td>
-                <td>{{ firmware_version }}</td>
-                <td>
-                    <ul>
-                        {% for field_name, field_value in fields %}
-                        <li>{{ field_name }}: {{ field_value }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <h1>Firmware Update Fields</h1>
+    <table border="1">
+        <tr>
+            <th>Device Name</th>
+            <th>Channel ID</th>
+            <th>Firmware Version</th>
+            <th>Fields</th>
+        </tr>
+        {% for firmware_update in firmware_update_data %}
+        <tr>
+            <td>{{ firmware_update.device_name }}</td>
+            <td>{{ firmware_update.channel_id }}</td>
+            <td>{{ firmware_update.firmware_version }}</td>
+            <td>
+                <table border="1">
+                    <tr>
+                        <th>Field Name</th>
+                        <th>Value</th>
+                    </tr>
+                    {% for field in firmware_update.fields %}
+                    <tr>
+                        <td>{{ field.field_name }}</td>
+                        <td>{{ field.value }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
