@@ -17,9 +17,10 @@ class UpdateSensorDataView(APIView):
             )
 
         # Get the latest firmware update for the device
-        firmware_update = FirmwareUpdate.objects.all()
+        firmware_updates = FirmwareUpdate.objects.all()
         firmware_update_data = []
-        for firmware_update in firmware_update:
+
+        for firmware_update in firmware_updates:
             device_name = firmware_update.device_name.device_name
             channel_id = firmware_update.device_name.channel_id
             firmware_version = firmware_update.firmware.firmware_version
