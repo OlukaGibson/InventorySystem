@@ -450,8 +450,9 @@ def history(request,pk):
 @login_required
 def display_firmware_updates(request):
 
-    group_by = request.GET.get('group_by')
-    if group_by == 'editable':
+    # group_by = request.GET.get('group_by')
+
+    if 1==2:
         firmware_updates = FirmwareUpdate.objects.filter(fields__edit=False)
         fields = Fields.objects.filter(edit=False)
 
