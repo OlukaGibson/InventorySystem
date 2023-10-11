@@ -1,82 +1,13 @@
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from django.http import FileResponse
-# from .models import FirmwareUpdate, Device, Firmware
-
-# class UpdateSensorDataView(APIView):
-#     def get(self, request, device_id, *args, **kwargs):
-#         try:
-#             spvValue = int(request.query_params.get('spvValue'))
-#         except (ValueError, TypeError):
-#             return Response(
-#                 {
-#                     'error': 'Invalid input data'
-#                 },
-#                 status=400
-#             )
-
-#         try:
-#             device = Device.objects.get(pk=device_id)
-#         except Device.DoesNotExist:
-#             return Response(
-#                 {
-#                     'error': 'Device not found'
-#                 },
-#                 status=404
-#             )
-
-#         # Get the latest firmware update for the device
-#         try:
-#             firmware_update = FirmwareUpdate.objects.filter(device_name=device).latest('uploaded_at')
-#         except FirmwareUpdate.DoesNotExist:
-#             return Response(
-#                 {
-#                     'error': 'Firmware update not found for this device'
-#                 },
-#                 status=404
-#             )
-
-#         # Update the spvValue
-#         firmware_update.spvValue = spvValue
-#         firmware_update.save()
-
-#         # Prepare the response data
-#         data = {
-#             'device_id': device.id,
-#             'device_name': device.device_name,
-#             'channel_id': device.channel_id,
-#             'firmware_version': firmware_update.firmware.firmware_version,
-#         }
-
-#         # Create a file response for the firmware version file
-#         file_response = FileResponse(open(firmware_update.firmware.firmware_version_file.path, 'rb'))
-
-#         # Set the Content-Disposition header to specify the filename for download
-#         file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
-
-#         # Return the file response along with the data
-#         return file_response
-
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import FileResponse
-from .models import FirmwareUpdate, Device, Firmware
+from .models import FirmwareUpdate, Device, Firmware, Fields, FirmwareUpdateField, FirmwareUpdateHistory
+import json
 
 class UpdateSensorDataView(APIView):
-    def get(self, request, device_id, *args, **kwargs):
-        # try:
-        #     spvValue = int(request.query_params.get('spvValue'))
-        # except (ValueError, TypeError):
-        #     return Response(
-        #         {
-        #             'error': 'Invalid input data'
-        #         },
-        #         status=400
-        #     )
-
+    def get(self, request, channel_id, *args, **kwargs):
         try:
-            device = Device.objects.get(pk=device_id)
+            device = Device.objects.get(channel_id=channel_id)
         except Device.DoesNotExist:
             return Response(
                 {
@@ -86,50 +17,23 @@ class UpdateSensorDataView(APIView):
             )
 
         # Get the latest firmware update for the device
-        try:
-            firmware_update = FirmwareUpdate.objects.filter(device_name=device).latest('uploaded_at')
-        except FirmwareUpdate.DoesNotExist:
-            return Response(
-                {
-                    'error': 'Firmware update not found for this device'
-                },
-                status=404
-            )
+        firmware_update = FirmwareUpdate.objects.filter(device_name=device)
+        firmware_update_data = []
+        for firmware_update in firmware_update:
+            device_name = firmware_update.device_name.device_name
+            channel_id = firmware_update.device_name.channel_id
+            firmware_version = firmware_update.firmware.firmware_version
+            fields = firmware_update.fields.all()
+            field_data = []
 
-        # Update the spvValue
-        # firmware_update.spvValue = spvValue
+            for field in fields:
+                firmware_update_field = FirmwareUpdateField.objects.get(
+                    firmware_update=firmware_update, field=field)
+                field_data.append({
+                    'field_name': field.field_name,
+                    'value': firmware_update_field.value
+                })
         
+        firmware_update_json = json.dumps(firmware_update_data)
 
-        if firmware_update.fileDownload == 1:
-            firmware_update.fileDownload = 0
-            firmware_update.save()
-            # Create a file response for the firmware version file
-            file_response = FileResponse(open(firmware_update.firmware.firmware_version_file.path, 'rb'))
-
-            # Set the Content-Disposition header to specify the filename for download
-            file_response['Content-Disposition'] = f'attachment; filename="{firmware_update.firmware.firmware_version_file.name}"'
-
-            # Return the file response along with the data
-            return file_response
-
-        else:
-            firmware_update.fileDownload = 1
-            firmware_update.save()
-            # Prepare the response data
-            data = {
-                'device_name': device.device_name,
-                'channel_id': device.channel_id,
-                'firmware_version': firmware_update.firmware.firmware_version,
-                'fileDownload': firmware_update.fileDownload,
-                'spvValue': firmware_update.spvValue,
-                'syncState': firmware_update.syncState,
-                'confrigDownload': firmware_update.confrigDownload,
-            }
-            return Response(
-                {
-                    'message': 'SPV value updated successfully',
-                    'data': data,
-                },
-                status=200
-            )
-            
+        return Response(firmware_update_json, status=200)
