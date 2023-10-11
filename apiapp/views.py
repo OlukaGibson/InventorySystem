@@ -4,9 +4,9 @@ from .models import FirmwareUpdate, Device, Firmware, Fields, FirmwareUpdateFiel
 import json
 
 class UpdateSensorDataView(APIView):
-    def get(self, request, channel_id, *args, **kwargs):
+    def get(self, request, id, *args, **kwargs):
         try:
-            device = Device.objects.get(channel_id=channel_id)
+            device = Device.objects.get(channel_id=id)
         except Device.DoesNotExist:
             return Response(
                 {
@@ -21,26 +21,27 @@ class UpdateSensorDataView(APIView):
         firmware_update_data = []
 
         for firmware_update in firmware_updates:
-            device_name = firmware_update.device_name.device_name
-            channel_id = firmware_update.device_name.channel_id
-            firmware_version = firmware_update.firmware.firmware_version
-            fields = firmware_update.fields.all()
-            field_data = []
+            if firmware_update.device_name.channel_id == id:
+                device_name = firmware_update.device_name.device_name
+                channel_id = firmware_update.device_name.channel_id
+                firmware_version = firmware_update.firmware.firmware_version
+                fields = firmware_update.fields.all()
+                field_data = []
 
-            for field in fields:
-                firmware_update_field = FirmwareUpdateField.objects.get(
-                    firmware_update=firmware_update, field=field)
-                field_data.append({
-                    'field_name': field.field_name,
-                    'value': firmware_update_field.value
+                for field in fields:
+                    firmware_update_field = FirmwareUpdateField.objects.get(
+                        firmware_update=firmware_update, field=field)
+                    field_data.append({
+                        'field_name': field.field_name,
+                        'value': firmware_update_field.value
+                    })
+
+                firmware_update_data.append({
+                    'device_name': device_name,
+                    'channel_id': channel_id,
+                    'firmware_version': firmware_version,
+                    'fields': field_data
                 })
-
-            firmware_update_data.append({
-                'device_name': device_name,
-                'channel_id': channel_id,
-                'firmware_version': firmware_version,
-                'fields': field_data
-            })
 
         # Convert the data to JSON
         firmware_update_json = json.dumps(firmware_update_data)
