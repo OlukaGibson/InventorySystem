@@ -450,6 +450,7 @@ def history(request,pk):
 @login_required
 def display_firmware_updates(request):
     firmware_updates = FirmwareUpdate.objects.all()
+    fields = Fields.objects.all()
 
     # Create a list to store the data for each entry
     firmware_update_data = []
@@ -477,7 +478,8 @@ def display_firmware_updates(request):
         })
 
     context = {
-        'firmware_update_data': firmware_update_data
+        'firmware_update_data': firmware_update_data,
+        'fields': fields,
     }
 
 
