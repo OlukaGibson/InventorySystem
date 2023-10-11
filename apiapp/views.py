@@ -18,7 +18,6 @@ class UpdateSensorDataView(APIView):
         # Get the latest firmware updates for the device
         firmware_updates = FirmwareUpdate.objects.filter(device_name=device)
 
-        firmware_update_data = []
 
         for firmware_update in firmware_updates:
             if firmware_update.device_name.channel_id == id:
@@ -36,12 +35,12 @@ class UpdateSensorDataView(APIView):
                         'value': firmware_update_field.value
                     })
 
-                firmware_update_data.append({
+                firmware_update_data = {
                     'device_name': device_name,
                     'channel_id': channel_id,
                     'firmware_version': firmware_version,
                     'fields': field_data
-                })
+                }
 
         # Convert the data to JSON
         firmware_update_json = json.dumps(firmware_update_data)
