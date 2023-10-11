@@ -20,20 +20,19 @@ class UpdateSensorDataView(APIView):
         firmware_update = FirmwareUpdate.objects.all()
         firmware_update_data = []
         for firmware_update in firmware_update:
-            if firmware_update.device_name.channel_id == channel_id:
-                device_name = firmware_update.device_name.device_name
-                channel_id = firmware_update.device_name.channel_id
-                firmware_version = firmware_update.firmware.firmware_version
-                fields = firmware_update.fields.all()
-                field_data = []
+            device_name = firmware_update.device_name.device_name
+            channel_id = firmware_update.device_name.channel_id
+            firmware_version = firmware_update.firmware.firmware_version
+            fields = firmware_update.fields.all()
+            field_data = []
 
-                for field in fields:
-                    firmware_update_field = FirmwareUpdateField.objects.get(
-                        firmware_update=firmware_update, field=field)
-                    field_data.append({
-                        'field_name': field.field_name,
-                        'value': firmware_update_field.value
-                    })
+            for field in fields:
+                firmware_update_field = FirmwareUpdateField.objects.get(
+                    firmware_update=firmware_update, field=field)
+                field_data.append({
+                    'field_name': field.field_name,
+                    'value': firmware_update_field.value
+                })
         
         firmware_update_json = json.dumps(firmware_update_data)
 
