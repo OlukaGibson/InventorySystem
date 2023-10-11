@@ -449,33 +449,33 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.filter(fields__edit=True)
-    fields = Fields.objects.filter(edit=True)
+    firmware_updates = FirmwareUpdate.objects.all()
+    fields = Fields.objects.all()
 
     # Create a list to store the data for each entry
     firmware_update_data = []
+    if 1==2:
+        for firmware_update in firmware_updates:
+            device_name = firmware_update.device_name.device_name
+            channel_id = firmware_update.device_name.channel_id
+            firmware_version = firmware_update.firmware.firmware_version
+            fields = firmware_update.fields.all()
+            field_data = []
 
-    for firmware_update in firmware_updates:
-        device_name = firmware_update.device_name.device_name
-        channel_id = firmware_update.device_name.channel_id
-        firmware_version = firmware_update.firmware.firmware_version
-        fields = firmware_update.fields.all()
-        field_data = []
-
-        for field in fields:
-            firmware_update_field = FirmwareUpdateField.objects.get(
+            for field in fields:
+                firmware_update_field = FirmwareUpdateField.objects.get(
                 firmware_update=firmware_update, field=field)
-            field_data.append({
-                'field_name': field.field_name,
-                'value': firmware_update_field.value
-            })
+                field_data.append({
+                    'field_name': field.field_name,
+                    'value': firmware_update_field.value
+                })
 
-        firmware_update_data.append({
-            'device_name': device_name,
-            'channel_id': channel_id,
-            'firmware_version': firmware_version,
-            'fields': field_data
-        })
+            firmware_update_data.append({
+                'device_name': device_name,
+                'channel_id': channel_id,
+                'firmware_version': firmware_version,
+                'fields': field_data
+            })
 
     context = {
         'firmware_update_data': firmware_update_data,
