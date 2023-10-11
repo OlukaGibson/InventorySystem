@@ -87,7 +87,6 @@
                             <tbody>
                                 {% for firmware_update in firmware_update_data %}
                                     <tr>
-                                        <th scope="row">{{ forloop.counter }}</th>
                                         <td>{{ firmware_update.device_name }}</td>
                                         <td>{{ firmware_update.channel_id }}</td>
                                         <td>{{ firmware_update.firmware_version }}</td>
