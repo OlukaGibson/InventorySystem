@@ -449,8 +449,8 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.all()
-    fields = Fields.objects.all()
+    firmware_updates = FirmwareUpdate.objects.filter(fields__edit=True)
+    fields = Fields.objects.filter(edit=True)
 
     # Create a list to store the data for each entry
     firmware_update_data = []
