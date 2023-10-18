@@ -460,22 +460,12 @@ def display_firmware_updates(request):
         channel_id = firmware_update.device_name.channel_id
         firmware_version = firmware_update.firmware.firmware_version
         fields = firmware_update.fields.all()
-        field_data_editable = []
-        field_data_non_editable = []
 
         for field in fields:
             firmware_update_field = FirmwareUpdateField.objects.get(
                 firmware_update=firmware_update, field=field)
-            if field.edit == True:
-                field_data_editable.append({
-                    'field_name': field.field_name,
-                    'value': firmware_update_field.value
-                })
-            elif field.edit == False:
-                field_data_non_editable.append({
-                    'field_name': field.field_name,
-                    'value': firmware_update_field.value
-                })
+            'field_name': field.field_name
+            'value': firmware_update_field.value
 
         firmware_update_data.append({
             'device_name': device_name,
