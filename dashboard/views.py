@@ -449,25 +449,34 @@ def history(request,pk):
 
 @login_required
 def display_firmware_updates(request):
-    firmware_updates = FirmwareUpdate.objects.select_related('device_name__device_name', 'device_name__channel_id', 'firmware__firmware_version').all()
+    firmware_updates = FirmwareUpdate.objects.all()
+    fields = Fields.objects.all()
 
+    # Create a list to store the data for each entry
     firmware_update_data = []
 
     for firmware_update in firmware_updates:
-        fields_data = [{'field_name': field.field_name, 'value': firmware_update_field.value}
-                       for field in firmware_update.fields.all()
-                       for firmware_update_field in FirmwareUpdateField.objects.filter(firmware_update=firmware_update, field=field)]
+        device_name = firmware_update.device_name.device_name
+        channel_id = firmware_update.device_name.channel_id
+        firmware_version = firmware_update.firmware.firmware_version
+        fields = firmware_update.fields.all()
+
+        # for field in fields:
+        #     firmware_update_field = FirmwareUpdateField.objects.get(firmware_update=firmware_update, field=field)
+        #     'field_name': field.field_name
+        #     'value': firmware_update_field.value
 
         firmware_update_data.append({
-            'device_name': firmware_update.device_name.device_name,
-            'channel_id': firmware_update.device_name.channel_id,
-            'firmware_version': firmware_update.firmware.firmware_version,
-            'fields_data': fields_data
+            'device_name': device_name,
+            'channel_id': channel_id,
+            'firmware_version': firmware_version,
         })
 
     context = {
         'firmware_update_data': firmware_update_data,
+        'fields': fields,
     }
+
 
     return render(request, 'dashboard/firmware_update.html', context)
 
