@@ -481,7 +481,6 @@ def display_firmware_updates(request):
             'device_name': device_name,
             'channel_id': channel_id,
             'firmware_version': firmware_version,
-            'fields': field_data
         })
 
     context = {
