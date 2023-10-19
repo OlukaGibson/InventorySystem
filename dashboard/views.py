@@ -447,33 +447,30 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
+
 @login_required
 def display_firmware_updates(request):
     firmware_updates = FirmwareUpdate.objects.all()
-    fields = Fields.objects.all()
+    fields = Fields.objects.filter(edit=True)  # Filter fields with edit=True
 
     # Create a list to store the data for each entry
     firmware_update_data = []
-    fields_data = []
 
     for firmware_update in firmware_updates:
         device_name = firmware_update.device_name.device_name
         channel_id = firmware_update.device_name.channel_id
         firmware_version = firmware_update.firmware.firmware_version
-        
-        fields = firmware_update.fields.all()
-
-
 
         field_data = []
 
+        # Filter only the fields with edit=True
         for field in fields:
             firmware_update_field = FirmwareUpdateField.objects.get(
-            firmware_update=firmware_update, field=field)
+                firmware_update=firmware_update, field=field)
             field_data.append({
                 'field_name': field.field_name,
                 'value': firmware_update_field.value
-                })
+            })
 
         firmware_update_data.append({
             'device_name': device_name,
@@ -487,8 +484,8 @@ def display_firmware_updates(request):
         'fields': fields,
     }
 
-
     return render(request, 'dashboard/firmware_update.html', context)
+
 
 
 
