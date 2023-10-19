@@ -448,79 +448,132 @@ def history(request,pk):
     return render(request, 'dashboard/history.html', context)
 
 
+
 @login_required
 def display_firmware_updates(request):
+    firmware_updates = FirmwareUpdate.objects.all()
+    
     group_by = request.GET.get('group_by')
+    
+    # Define the firmware_update_data as an empty list
+    firmware_update_data = []
+
     if group_by == 'editable':
-        firmware_updates = FirmwareUpdate.objects.all()
         fields = Fields.objects.filter(edit=True)  # Filter fields with edit=True
 
-        # Create a list to store the data for each entry
-        firmware_update_data = []
+        # Rest of your code...
 
-        for firmware_update in firmware_updates:
-            device_name = firmware_update.device_name.device_name
-            channel_id = firmware_update.device_name.channel_id
-            firmware_version = firmware_update.firmware.firmware_version
+    elif group_by == 'noneditable':
+        fields = Fields.objects.filter(edit=False)  # Filter fields with edit=False
 
-            field_data = []
+        # Rest of your code...
 
-            # Filter only the fields with edit=True
-            for field in fields:
-                firmware_update_field = FirmwareUpdateField.objects.get(
-                    firmware_update=firmware_update, field=field)
-                field_data.append({
-                    'field_name': field.field_name,
-                    'value': firmware_update_field.value
-                })
+    # Create a list to store the data for each entry
+    firmware_update_data = []
 
-            firmware_update_data.append({
-                'device_name': device_name,
-                'channel_id': channel_id,
-                'firmware_version': firmware_version,
-                'fields': field_data
+    for firmware_update in firmware_updates:
+        device_name = firmware_update.device_name.device_name
+        channel_id = firmware_update.device_name.channel_id
+        firmware_version = firmware_update.firmware.firmware_version
+
+        field_data = []
+
+        # Filter only the fields with edit=True
+        for field in fields:
+            firmware_update_field = FirmwareUpdateField.objects.get(
+                firmware_update=firmware_update, field=field)
+            field_data.append({
+                'field_name': field.field_name,
+                'value': firmware_update_field.value
             })
+
+        firmware_update_data.append({
+            'device_name': device_name,
+            'channel_id': channel_id,
+            'firmware_version': firmware_version,
+            'fields': field_data
+        })
+
+    context = {
+        'firmware_update_data': firmware_update_data,
+        'fields': fields,
+    }
+
+    return render(request, 'dashboard/firmware_update.html', context)
+
+# @login_required
+# def display_firmware_updates(request):
+#     group_by = request.GET.get('group_by')
+#     if group_by == 'editable':
+#         firmware_updates = FirmwareUpdate.objects.all()
+#         fields = Fields.objects.filter(edit=True)  # Filter fields with edit=True
+
+#         # Create a list to store the data for each entry
+#         firmware_update_data = []
+
+#         for firmware_update in firmware_updates:
+#             device_name = firmware_update.device_name.device_name
+#             channel_id = firmware_update.device_name.channel_id
+#             firmware_version = firmware_update.firmware.firmware_version
+
+#             field_data = []
+
+#             # Filter only the fields with edit=True
+#             for field in fields:
+#                 firmware_update_field = FirmwareUpdateField.objects.get(
+#                     firmware_update=firmware_update, field=field)
+#                 field_data.append({
+#                     'field_name': field.field_name,
+#                     'value': firmware_update_field.value
+#                 })
+
+#             firmware_update_data.append({
+#                 'device_name': device_name,
+#                 'channel_id': channel_id,
+#                 'firmware_version': firmware_version,
+#                 'fields': field_data
+#             })
 
          
         
-    elif group_by == 'noneditable':
-        firmware_updates = FirmwareUpdate.objects.all()
-        fields = Fields.objects.filter(edit=False)  # Filter fields with edit=False
+#     elif group_by == 'noneditable':
+#         firmware_updates = FirmwareUpdate.objects.all()
+#         fields = Fields.objects.filter(edit=False)  # Filter fields with edit=False
 
-        # Create a list to store the data for each entry
-        firmware_update_data = []
+#         # Create a list to store the data for each entry
+#         firmware_update_data = []
 
-        for firmware_update in firmware_updates:
-            device_name = firmware_update.device_name.device_name
-            channel_id = firmware_update.device_name.channel_id
-            firmware_version = firmware_update.firmware.firmware_version
+#         for firmware_update in firmware_updates:
+#             device_name = firmware_update.device_name.device_name
+#             channel_id = firmware_update.device_name.channel_id
+#             firmware_version = firmware_update.firmware.firmware_version
 
-            field_data = []
+#             field_data = []
 
-            # Filter only the fields with edit=True
-            for field in fields:
-                firmware_update_field = FirmwareUpdateField.objects.get(
-                    firmware_update=firmware_update, field=field)
-                field_data.append({
-                    'field_name': field.field_name,
-                    'value': firmware_update_field.value
-                })
+#             # Filter only the fields with edit=True
+#             for field in fields:
+#                 firmware_update_field = FirmwareUpdateField.objects.get(
+#                     firmware_update=firmware_update, field=field)
+#                 field_data.append({
+#                     'field_name': field.field_name,
+#                     'value': firmware_update_field.value
+#                 })
 
-            firmware_update_data.append({
-                'device_name': device_name,
-                'channel_id': channel_id,
-                'firmware_version': firmware_version,
-                'fields': field_data
-            })
+#             firmware_update_data.append({
+#                 'device_name': device_name,
+#                 'channel_id': channel_id,
+#                 'firmware_version': firmware_version,
+#                 'fields': field_data
+#             })
 
-    context = {
-            'firmware_update_data': firmware_update_data,
-            'fields': fields,
-        }
+#     context = {
+#             'firmware_update_data': firmware_update_data,
+#             'fields': fields,
+#         }
 
 
 
-    return render(request, 'dashboard/firmware_update.html', context)
+#     return render(request, 'dashboard/firmware_update.html', context)
 
 
 
