@@ -452,7 +452,8 @@ def history(request,pk):
 @login_required
 def display_firmware_updates(request):
     firmware_updates = FirmwareUpdate.objects.all()
-    
+    fields = Fields.objects.all()
+
     group_by = request.GET.get('group_by')
     
     # Define the firmware_update_data as an empty list
