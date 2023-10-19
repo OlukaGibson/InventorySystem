@@ -462,12 +462,11 @@ def display_firmware_updates(request):
     if group_by == 'editable':
         fields = Fields.objects.filter(edit=True)  # Filter fields with edit=True
 
-        # Rest of your code...
-
     elif group_by == 'noneditable':
         fields = Fields.objects.filter(edit=False)  # Filter fields with edit=False
 
-        # Rest of your code...
+    else:
+        fields = Fields.objects.all()
 
     # Create a list to store the data for each entry
     firmware_update_data = []
