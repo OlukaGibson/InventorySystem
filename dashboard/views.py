@@ -481,10 +481,8 @@ def display_firmware_updates(request):
                 'fields': field_data
             })
 
-        context = {
-            'firmware_update_data': firmware_update_data,
-            'fields': fields,
-        } 
+         
+        
     elif group_by == 'noneditable':
         firmware_updates = FirmwareUpdate.objects.all()
         fields = Fields.objects.filter(edit=False)  # Filter fields with edit=False
@@ -515,7 +513,7 @@ def display_firmware_updates(request):
                 'fields': field_data
             })
 
-        context = {
+    context = {
             'firmware_update_data': firmware_update_data,
             'fields': fields,
         }
