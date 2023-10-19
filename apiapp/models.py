@@ -1,6 +1,7 @@
-
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Device(models.Model):
     device_name = models.CharField(max_length=50,default='Device Name', null=True)
@@ -42,10 +43,22 @@ class FirmwareUpdate(models.Model):
 class FirmwareUpdateField(models.Model):
     firmware_update = models.ForeignKey(FirmwareUpdate, on_delete=models.CASCADE)
     field = models.ForeignKey(Fields, on_delete=models.CASCADE)
-    value = models.CharField(max_length=255)  # You can change this data type as needed
+    value = models.CharField(max_length=255,default='0')  # You can change this data type as needed
 
     def __str__(self):
         return f"{self.field.field_name} - {self.firmware_update.id}"
+
+# Use the post_save signal to create a new FirmwareUpdateField when a new Fields instance is created
+@receiver(post_save, sender=Fields)
+def create_firmware_update_field(sender, instance, created, **kwargs):
+    if created:
+        firmware_updates = FirmwareUpdate.objects.all()
+        for update in firmware_updates:
+            FirmwareUpdateField.objects.create(firmware_update=update, field=instance, value='0')
+
+# Connect the signal
+post_save.connect(create_firmware_update_field, sender=Fields)
+
 
 class FirmwareUpdateHistory(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
