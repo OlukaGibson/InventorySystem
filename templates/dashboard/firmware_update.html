@@ -73,7 +73,7 @@
             <div class="container">
                 <div class="row my-4">
                     <div class="col-md-4">
-                        <form method="post" enctype="multipart/form-data">
+                        <form method="post" >
                             {% csrf_token %}
                             {{ fileForm }}
                             <button type="submit">Upload</button>
