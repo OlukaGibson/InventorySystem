@@ -72,17 +72,24 @@
         
             <div class="container">
                 <div class="row my-4">
-                    <div class="col-md-10">
+                    <div class="col-md-4">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ fileForm }}
+                            <button type="submit">Upload</button>
+                        </form>
+                    </div>
+                    <div class="col-md-8">
                         <a href="?group_by=editable">
                             <button type="button" class="btn btn-primary">
                                 Editable Fields
                             </button>
-                        </a>      
+                        </a><p>    </p>      
                         <a href="?group_by=noneditable">
                             <button type="button" class="btn btn-primary">
                                 Non-Editable Fields
                             </button>
-                        </a>
+                        </a><p>    </p>
                         <a href="?group_by=all">
                             <button type="button" class="btn btn-primary">
                                 All fields

@@ -468,6 +468,15 @@ def display_firmware_updates(request):
     else:
         fields = Fields.objects.all()
 
+    #File upload form
+    if request.method == 'POST':
+        fileForm = UploadFileForm(request.POST, request.FILES)
+        if fileForm.is_valid():
+            fileForm.save()
+            return redirect('display_firmware_updates')
+        
+    
+        
     # Create a list to store the data for each entry
     firmware_update_data = []
 
@@ -497,6 +506,7 @@ def display_firmware_updates(request):
     context = {
         'firmware_update_data': firmware_update_data,
         'fields': fields,
+        'fileForm': UploadFileForm(),
     }
 
     return render(request, 'dashboard/firmware_update.html', context)
@@ -595,11 +605,11 @@ def display_firmware_updates(request):
     # elif group_by == 'confrigDownload':
     #     firmware_updates = firmware_updates.order_by('confrigDownload')
 
-#     if request.method == 'POST':
-#         fileForm = UploadFileForm(request.POST, request.FILES)
-#         if fileForm.is_valid():
-#             fileForm.save()
-#             return redirect('display_firmware_updates')
+    # if request.method == 'POST':
+    #     fileForm = UploadFileForm(request.POST, request.FILES)
+    #     if fileForm.is_valid():
+    #         fileForm.save()
+    #         return redirect('display_firmware_updates')
         
 #         selected_ids = request.POST.getlist('selected_firmware_updates')
 #         edit_feature = request.POST.get('edit_feature')
