@@ -73,27 +73,12 @@
             <div class="container">
                 <div class="row my-4">
                     <div class="col-md-3">
-
-                        <h3>Upload File</h3>
-                        <form method="post" >
-                            {% csrf_token %}
-                            {{ fileForm }}
-                            <button type="submit">Upload</button>
-                        </form>
-
-                        <h3>New Field</h3>
-                        <form method="post" >
-                            {% csrf_token %}
-                            {{ fieldForm }}
-                            <button type="submit">Add</button>
-                        </form>
-                    </div>
-                    <div class="col-md-9">
+                        <h3> Fields </h3>
                         <a href="?group_by=editable">
                             <button type="button" class="btn btn-primary">
                                 Editable Fields
                             </button>
-                        </a>     
+                        </a>
                         <a href="?group_by=noneditable">
                             <button type="button" class="btn btn-primary">
                                 Non-Editable Fields
@@ -104,7 +89,80 @@
                                 All fields
                             </button>
                         </a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal1">
+                            New Field
+                        </button>
+
+                        <hr>
+                        <h3>Firmware</h3>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal2">
+                            New Firmware
+                        </button>
+
+                        <div class="modal fade" id="popupFormModal1" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel1" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="popupFormModalLabel1">New Field</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Your form goes here -->
+                                        <form method="post" >
+                                            {% csrf_token %}
+                                            {{ fieldForm|crispy }}
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" name="fieldForm" class="btn btn-primary">Submit</button>
+                                        <!-- Add an additional button if needed -->
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="popupFormModal2" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel2" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="popupFormModalLabel2">New Firmware</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Your form goes here -->
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            {{ fileForm|crispy }}
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" name="fileForm " class="btn btn-primary">Submit</button>
+                                        <!-- Add an additional button if needed -->
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h3>Upload File</h3>
+                        <form method="post" >
+                            {% csrf_token %}
+                            {{ fileForm }}
+                            <button type="submit">Upload</button>
+                        </form>
                         <br><br>
+                        <h3>New Field</h3>
+                        <form method="post" >
+                            {% csrf_token %}
+                            {{ fieldForm }}
+                            <button type="submit">Add</button>
+                        </form> -->
+                    </div>
+                    <div class="col-md-9">     
                         <table class="table bg-white">
                             <thead class="bg-primary">
                                 <tr class="text-white">
@@ -132,4 +190,17 @@
                     </div>
                 </div>
             </div>
+            <script>
+                // JavaScript to handle the form submission inside the modal
+                const form1SubmitButton = document.querySelector('#popupFormModal1 button[name="fieldForm"]');
+                const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="fileForm "]');
+                form1SubmitButton.addEventListener('click', function () {
+                    // Submit the form when the "Submit" button is clicked
+                    document.querySelector('#popupFormModal1 form').submit();
+                });
+                form2SubmitButton.addEventListener('click', function () {
+                    // Submit the form when the "Submit" button is clicked
+                    document.querySelector('#popupFormModal2 form').submit();
+                });
+            </script>
 {% endblock%}

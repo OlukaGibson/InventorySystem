@@ -449,6 +449,43 @@ def history(request,pk):
 
 
 
+
+def details(request,pk):
+    item = Stock.objects.get(id=pk)
+    if request.method == 'POST':
+        newStockForm = NewStockForm(request.POST, instance=item)
+        dispenseForm = DispenseForm(request.POST, instance=item)
+        if newStockForm.is_valid():
+            history = StockHistory.objects.create(item_name=item.item_name,
+                                  stock_in=item.stock_in,
+                                  stock_out=item.stock_out,
+                                  stock_in_date=item.stock_in_date,
+                                  stock_out_date=item.stock_out_date)
+            history.save()
+            newStockForm.save()
+            return redirect('products')
+        
+        if dispenseForm.is_valid():
+            history = StockHistory.objects.create(item_name=item.item_name,
+                                  stock_in=item.stock_in,
+                                  stock_out=item.stock_out,
+                                  stock_in_date=item.stock_in_date,
+                                  stock_out_date=item.stock_out_date)
+            history.save()
+            dispenseForm.save()
+            return redirect('products')
+        
+    else:
+        newStockForm = NewStockForm(instance=item)
+        dispenseForm = DispenseForm(instance=item)
+    context = {
+        'newStockForm' : newStockForm,
+        'dispenseForm' : dispenseForm,
+        'item' : item
+    }
+    return render(request,'dashboard/details.html',context)
+
+
 @login_required
 def display_firmware_updates(request):
     firmware_updates = FirmwareUpdate.objects.all()
@@ -468,20 +505,22 @@ def display_firmware_updates(request):
     else:
         fields = Fields.objects.all()
 
-    #File upload form
+
+    #Forms
     if request.method == 'POST':
         fileForm = UploadFileForm(request.POST, request.FILES)
+        fieldForm = NewField(request.POST)
         if fileForm.is_valid():
             fileForm.save()
             return redirect('display_firmware_updates')
-    
-    #Field update form
-    if request.method == 'POST':
-        fieldForm = NewField(request.POST)
+        
         if fieldForm.is_valid():
             fieldForm.save()
             return redirect('display_firmware_updates')
-    
+        
+    else:
+        fileForm = UploadFileForm()
+        fieldForm = NewField()
         
     # Create a list to store the data for each entry
     firmware_update_data = []
@@ -512,8 +551,8 @@ def display_firmware_updates(request):
     context = {
         'firmware_update_data': firmware_update_data,
         'fields': fields,
-        'fileForm': UploadFileForm(),
-        'fieldForm': NewField(),
+        'fileForm': fileForm,
+        'fieldForm': fieldForm,
     }
 
     return render(request, 'dashboard/firmware_update.html', context)
