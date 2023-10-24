@@ -2,7 +2,7 @@ from django import forms
 from .models import Stock, Casing, Production
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
-from apiapp.models import FirmwareUpdate, Firmware, Device, FirmwareUpdateHistory
+from apiapp.models import FirmwareUpdate, Firmware, Device, FirmwareUpdateHistory, Fields
 
 
 
@@ -75,3 +75,8 @@ class UploadFileForm(forms.ModelForm):
     class Meta:
         model = Firmware
         fields = ('firmware_version', 'firmware_version_file')
+
+class NewField(forms.ModelForm):
+    class Meta:
+        model = Fields
+        fields = ('field_name', 'edit')

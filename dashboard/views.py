@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm, NewField
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
@@ -474,7 +474,13 @@ def display_firmware_updates(request):
         if fileForm.is_valid():
             fileForm.save()
             return redirect('display_firmware_updates')
-        
+    
+    #Field update form
+    if request.method == 'POST':
+        fieldForm = NewField(request.POST)
+        if fieldForm.is_valid():
+            fieldForm.save()
+            return redirect('display_firmware_updates')
     
         
     # Create a list to store the data for each entry
@@ -507,6 +513,7 @@ def display_firmware_updates(request):
         'firmware_update_data': firmware_update_data,
         'fields': fields,
         'fileForm': UploadFileForm(),
+        'fieldForm': NewField(),
     }
 
     return render(request, 'dashboard/firmware_update.html', context)

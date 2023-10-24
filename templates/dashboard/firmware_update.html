@@ -73,10 +73,19 @@
             <div class="container">
                 <div class="row my-4">
                     <div class="col-md-2">
+
+                        <h3>Upload File</h3>
                         <form method="post" >
                             {% csrf_token %}
                             {{ fileForm }}
                             <button type="submit">Upload</button>
+                        </form>
+
+                        <h3>New Field</h3>
+                        <form method="post" >
+                            {% csrf_token %}
+                            {{ fieldForm }}
+                            <button type="submit">Add</button>
                         </form>
                     </div>
                     <div class="col-md-10">
