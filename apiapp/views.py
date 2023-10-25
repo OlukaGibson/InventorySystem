@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import FirmwareUpdate, Device, Firmware, Fields, FirmwareUpdateField, FirmwareUpdateHistory
 import json
-from django.http import JsonResponse
 
 class UpdateSensorDataView(APIView):
     def get(self, request, id, *args, **kwargs):
@@ -46,4 +45,4 @@ class UpdateSensorDataView(APIView):
         # Convert the data to JSON
         firmware_update_json = json.dumps(firmware_update_data)
 
-        return JsonResponse(firmware_update_json, status=200)
+        return Response(firmware_update_json, status=200)
