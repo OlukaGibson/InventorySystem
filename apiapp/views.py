@@ -30,10 +30,11 @@ class UpdateSensorDataView(APIView):
                 for field in fields:
                     firmware_update_field = FirmwareUpdateField.objects.get(
                         firmware_update=firmware_update, field=field)
-                    field_data.append({
-                        'field_name': field.field_name,
-                        'value': firmware_update_field.value
-                    })
+                    if field.edit:
+                        field_data.append({
+                            'field_name': field.field_name,
+                            'value': firmware_update_field.value
+                        })
 
                 firmware_update_data = {
                     'device_name': device_name,
