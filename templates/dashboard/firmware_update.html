@@ -183,6 +183,7 @@
                                         <td>{{ firmware_update.device_name }}</td>
                                         <td>{{ firmware_update.channel_id }}</td>
                                         <td>{{ firmware_update.firmware_version }}</td>
+                                        <td>{{ firmware_update.fileDownload}}</td>
                                         {% for field in firmware_update.fields %}
                                             <td>{{ field.value }}</td>
                                         {% endfor %}
