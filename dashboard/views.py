@@ -490,6 +490,7 @@ def display_firmware_updates(request):
     for firmware_update in firmware_updates:
         device_name = firmware_update.device_name.device_name
         channel_id = firmware_update.device_name.channel_id
+        fileDownload = firmware_update.device_name.fileDownload
         firmware_version = firmware_update.firmware.firmware_version
 
         field_data = []
@@ -506,6 +507,7 @@ def display_firmware_updates(request):
         firmware_update_data.append({
             'device_name': device_name,
             'channel_id': channel_id,
+            'fileDownload': fileDownload,
             'firmware_version': firmware_version,
             'fields': field_data
         })
