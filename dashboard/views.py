@@ -488,6 +488,7 @@ def display_firmware_updates(request):
     else:
         fileForm = UploadFileForm()
         fieldForm = NewField()
+        newDevice = NewDevice()
         
     # Create a list to store the data for each entry
     firmware_update_data = []
