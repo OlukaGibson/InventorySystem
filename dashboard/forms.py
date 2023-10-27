@@ -80,3 +80,9 @@ class NewField(forms.ModelForm):
     class Meta:
         model = Fields
         fields = ('field_name', 'edit')
+
+class NewDevice(forms.ModelForm):
+    class Meta:
+        model = Device
+        fields = ('device_name', 'channel_id', 'fileDownload')
+

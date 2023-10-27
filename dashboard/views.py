@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm, NewField
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm, NewField, NewDevice
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
@@ -470,6 +470,7 @@ def display_firmware_updates(request):
 
     #Forms
     if request.method == 'POST':
+        newDevice = NewDevice(request.POST)
         fileForm = UploadFileForm(request.POST, request.FILES)
         fieldForm = NewField(request.POST)
         if fileForm.is_valid():
@@ -478,6 +479,10 @@ def display_firmware_updates(request):
         
         if fieldForm.is_valid():
             fieldForm.save()
+            return redirect('display_firmware_updates')
+        
+        if newDevice.is_valid():
+            newDevice.save()
             return redirect('display_firmware_updates')
         
     else:
@@ -509,7 +514,7 @@ def display_firmware_updates(request):
             'channel_id': channel_id,
             'fileDownload': fileDownload,
             'firmware_version': firmware_version,
-            'fields': field_data
+            'fields': field_data,
         })
 
     context = {
@@ -517,6 +522,7 @@ def display_firmware_updates(request):
         'fields': fields,
         'fileForm': fileForm,
         'fieldForm': fieldForm,
+        'newDevice': newDevice,
     }
 
     return render(request, 'dashboard/firmware_update.html', context)

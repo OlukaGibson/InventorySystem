@@ -107,7 +107,6 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal3" style="padding: 10px 20px; margin: 5px;">
                             Add Device
                         </button>
-                        <h3>Devices</h3>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal4" style="padding: 10px 20px; margin: 5px;">
                             Edit Device
                         </button>
@@ -205,7 +204,7 @@
                                 <!-- Your form goes here -->
                                 <form method="post">
                                     {% csrf_token %}
-                                    {{ fileForm|crispy }}
+                                    {{ newDevice|crispy }}
                                 </form>
                             </div>
                             <div class="modal-footer">

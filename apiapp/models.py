@@ -7,7 +7,7 @@ class Device(models.Model):
     device_name = models.CharField(max_length=50,default='Device Name', null=True)
     channel_id = models.CharField(max_length=50,default='Channel ID', null=True)
     fileDownload = models.IntegerField(default=0, null=True)
-    created_at = models.DateTimeField(auto_created=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):  
         return self.device_name
