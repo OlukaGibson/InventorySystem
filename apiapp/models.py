@@ -31,20 +31,24 @@ class Fields(models.Model):
 class FirmwareUpdate(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
     firmware = models.ForeignKey(Firmware, on_delete=models.CASCADE)
-    fields = models.ManyToManyField(Fields, through='FirmwareUpdateField', blank=False)
-    # fileDownload = models.IntegerField(default=0, null=True)
-    # spvValue = models.PositiveIntegerField(default=0, null=True)
-    # syncState = models.IntegerField(default=0, null=True)
-    # confrigDownload = models.IntegerField(default=0, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Firmware: {self.firmware.firmware_version} for Device: {self.device_name.device_name}"
 
+    def save(self, *args, **kwargs):
+        super(FirmwareUpdate, self).save(*args, **kwargs)
+
+        # Create a FirmwareUpdateField for each field with an initial value of '0'
+        fields = Fields.objects.all()
+        for field in fields:
+            FirmwareUpdateField.objects.get_or_create(firmware_update=self, field=field, value='0')
+
+            
 class FirmwareUpdateField(models.Model):
     firmware_update = models.ForeignKey(FirmwareUpdate, on_delete=models.CASCADE)
     field = models.ForeignKey(Fields, on_delete=models.CASCADE)
-    value = models.CharField(max_length=255,default='0')  # You can change this data type as needed
+    value = models.CharField(max_length=255, default='0')
 
     def __str__(self):
         return f"{self.field.field_name} - {self.firmware_update.id}"
