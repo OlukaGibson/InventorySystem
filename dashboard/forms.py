@@ -86,3 +86,8 @@ class NewDevice(forms.ModelForm):
         model = Device
         fields = ('device_name', 'channel_id', 'fileDownload')
 
+
+class NewFirmwareUpdate(forms.ModelForm):
+    class Meta:
+        model = FirmwareUpdate
+        fields = ('device_name', 'firmware')

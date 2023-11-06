@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm, NewField, NewDevice
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm, NewField, NewDevice, NewFirmwareUpdate
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
@@ -473,6 +473,7 @@ def display_firmware_updates(request):
         newDevice = NewDevice(request.POST)
         fileForm = UploadFileForm(request.POST, request.FILES)
         fieldForm = NewField(request.POST)
+        firmwareForm = NewFirmwareUpdate(request.POST)
         if fileForm.is_valid():
             fileForm.save()
             return redirect('display_firmware_updates')
@@ -485,10 +486,15 @@ def display_firmware_updates(request):
             newDevice.save()
             return redirect('display_firmware_updates')
         
+        if firmwareForm.is_valid():
+            firmwareForm.save()
+            return redirect('display_firmware_updates')
+        
     else:
         fileForm = UploadFileForm()
         fieldForm = NewField()
         newDevice = NewDevice()
+        firmwareForm = NewFirmwareUpdate()
         
     # Create a list to store the data for each entry
     firmware_update_data = []
@@ -524,6 +530,7 @@ def display_firmware_updates(request):
         'fileForm': fileForm,
         'fieldForm': fieldForm,
         'newDevice': newDevice,
+        'firmwareForm': firmwareForm,
     }
 
     return render(request, 'dashboard/firmware_update.html', context)

@@ -108,7 +108,11 @@
                             Add Device
                         </button>
                         <hr>
-                        <h3></h3>
+
+                        <h3>Firmware Update</h3>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal4" style="padding: 10px 20px; margin: 5px;">
+                            New Firmware Update
+                        </button>
                     </div>
                     <div class="col-md-10">     
                         <table class="table bg-white">
@@ -214,11 +218,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="popupFormModal2" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel2" aria-hidden="true">
+                <div class="modal fade" id="popupFormModal4" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel4" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="popupFormModalLabel2">New Firmware</h5>
+                                <h5 class="modal-title" id="popupFormModalLabel4">New Firmware</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -227,7 +231,7 @@
                                 <!-- Your form goes here -->
                                 <form method="post">
                                     {% csrf_token %}
-                                    {{ fileForm|crispy }}
+                                    {{ firmwareForm|crispy }}
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -244,6 +248,7 @@
                 const form1SubmitButton = document.querySelector('#popupFormModal1 button[name="fieldForm"]');
                 const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="fileForm "]');
                 const form3SubmitButton = document.querySelector('#popupFormModal3 button[name="newDevice "]');
+                const form4SubmitButton = document.querySelector('#popupFormModal4 button[name="firmwareForm "]');
                 form1SubmitButton.addEventListener('click', function () {
                     // Submit the form when the "Submit" button is clicked
                     document.querySelector('#popupFormModal1 form').submit();
@@ -255,6 +260,10 @@
                 form3SubmitButton.addEventListener('click', function () {
                     // Submit the form when the "Submit" button is clicked 
                     document.querySelector('#popupFormModal3 form').submit();
+                });
+                form4SubmitButton.addEventListener('click', function () {
+                    // Submit the form when the "Submit" button is clicked 
+                    document.querySelector('#popupFormModal4 form').submit();
                 });
             </script>
 {% endblock%}
