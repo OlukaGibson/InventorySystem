@@ -4,13 +4,26 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class Device(models.Model):
-    device_name = models.CharField(max_length=50,default='Device Name', null=True)
-    channel_id = models.CharField(max_length=50,default='Channel ID', null=True)
+    device_name = models.CharField(max_length=50, default='Device Name', null=True)
+    channel_id = models.CharField(max_length=50, default='Channel ID', null=True)
     fileDownload = models.IntegerField(default=0, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):  
         return self.device_name
+
+# Use the post_save signal to create FirmwareUpdateField instances for each Device
+@receiver(post_save, sender=Device)
+def create_firmware_update_fields_for_device(sender, instance, created, **kwargs):
+    if created:
+        firmware_updates = FirmwareUpdate.objects.all()
+        fields = Fields.objects.all()
+        for update in firmware_updates:
+            for field in fields:
+                FirmwareUpdateField.objects.get_or_create(firmware_update=update, field=field, value='0')
+
+# Connect the signal
+post_save.connect(create_firmware_update_fields_for_device, sender=Device)
 
 class Firmware(models.Model):
     firmware_version = models.CharField(max_length=20, default='Firmware Version', null=True)
@@ -19,14 +32,21 @@ class Firmware(models.Model):
 
     def __str__(self):
         return self.firmware_version
-
+    
 class Fields(models.Model):
     field_name = models.CharField(max_length=50, null=True)
     edit = models.BooleanField(default=False)
-    
 
-    def __str__(self):
-        return self.field_name
+# Use the post_save signal to create FirmwareUpdateField instances for each Fields instance
+@receiver(post_save, sender=Fields)
+def create_firmware_update_fields_for_fields(sender, instance, created, **kwargs):
+    if created:
+        firmware_updates = FirmwareUpdate.objects.all()
+        for update in firmware_updates:
+            FirmwareUpdateField.objects.get_or_create(firmware_update=update, field=instance, value='0')
+
+# Connect the signal
+post_save.connect(create_firmware_update_fields_for_fields, sender=Fields)
 
 class FirmwareUpdate(models.Model):
     device_name = models.ForeignKey(Device, on_delete=models.CASCADE)
