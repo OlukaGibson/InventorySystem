@@ -73,47 +73,70 @@
             <div class="container">
                 <div class="row my-4">
                     <div class="col-md-2">
-                        <h3> Fields </h3>
-                        <a href="?group_by=editable">
-                            <button type="button" class="btn btn-primary" style="padding: 10px 20px; margin: 5px;">
-                                Editable Fields
-                            </button>
-                        </a>
-                        <a href="?group_by=noneditable">
-                            <button type="button" class="btn btn-primary" style="margin: 5px;">
-                                Non-Editable Fields
-                            </button>
-                        </a>   
-                        <a href="?group_by=all">
-                            <button type="button" class="btn btn-primary" style="padding: 10px 20px; margin: 5px;">
-                                All fields
-                            </button>
-                        </a>
+                        <div class="dropdown">
+                            <h3 class="dropdown-toggle" data-toggle="dropdown" id="fieldsDropdown">
+                                Fields
+                            </h3>
+                            <div class="dropdown-menu" aria-labelledby="fieldsDropdown">
+                                <a class="dropdown-item" href="?group_by=editable">
+                                    Editable Fields
+                                </a>
+                                <a class="dropdown-item" href="?group_by=noneditable">
+                                    Non-Editable Fields
+                                </a>
+                                <a class="dropdown-item" href="?group_by=all">
+                                    All fields
+                                </a>
+                            </div>
+                        </div>
+                    
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal1" style="padding: 10px 20px; margin: 5px;">
                             New Fields
                         </button>
-
+                    
                         <hr>
-                        <h3>Firmware</h3>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal2" style="padding: 10px 20px; margin: 5px;">
-                            New Firmware
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            All Firmware
-                        </button>
-
+                    
+                        <div class="dropdown">
+                            <h3 class="dropdown-toggle" data-toggle="dropdown" id="firmwareDropdown">
+                                Firmware
+                            </h3>
+                            <div class="dropdown-menu" aria-labelledby="firmwareDropdown">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#popupFormModal2">
+                                    New Firmware
+                                </button>
+                                <button type="button" class="dropdown-item">
+                                    All Firmware
+                                </button>
+                            </div>
+                        </div>
+                    
                         <hr>
-                        <h3>Devices</h3>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal3" style="padding: 10px 20px; margin: 5px;">
-                            Add Device
-                        </button>
+                    
+                        <div class="dropdown">
+                            <h3 class="dropdown-toggle" data-toggle="dropdown" id="devicesDropdown">
+                                Devices
+                            </h3>
+                            <div class="dropdown-menu" aria-labelledby="devicesDropdown">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#popupFormModal3">
+                                    Add Device
+                                </button>
+                            </div>
+                        </div>
+                    
                         <hr>
-
-                        <h3>Firmware Update</h3>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal4" style="padding: 10px 20px; margin: 5px;">
-                            New Firmware Update
-                        </button>
+                    
+                        <div class="dropdown">
+                            <h3 class="dropdown-toggle" data-toggle="dropdown" id="firmwareUpdateDropdown">
+                                Firmware Update
+                            </h3>
+                            <div class="dropdown-menu" aria-labelledby="firmwareUpdateDropdown">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#popupFormModal4">
+                                    New Firmware Update
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="col-md-10">     
                         <table class="table bg-white">
                             <thead class="bg-primary">
