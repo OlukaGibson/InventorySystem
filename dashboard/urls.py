@@ -1,9 +1,9 @@
-rom django.urls import path
+from django.urls import path
 from . import views
 
 
 urlpatterns = [
-    path('',  views.index, name='index'),
+    path('index/',  views.index, name='index'),
     path('staff/',  views.staff, name='staff'),
     path('reports_pcb/',  views.reports_pcb, name='reports_pcb'),
     path('reports_communication_config/',  views.reports_communication_config, name='reports_communication_config'),
