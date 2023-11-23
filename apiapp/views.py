@@ -7,16 +7,9 @@ class UpdateSensorDataView(APIView):
         try:
             device = Device.objects.get(channel_id=id)
         except Device.DoesNotExist:
-            return Response(
-                {
-                    'error': 'Device not found'
-                },
-                status=404
-            )
+            return Response({'error': 'Device not found'}, status=404)
 
-        # Get the latest firmware updates for the device
         firmware_updates = FirmwareUpdate.objects.filter(device_name=device)
-
         firmware_update_data = []
 
         for firmware_update in firmware_updates:
@@ -33,15 +26,14 @@ class UpdateSensorDataView(APIView):
             firmware_update_fields = FirmwareUpdateField.objects.filter(firmware_update=firmware_update)
 
             for firmware_update_field in firmware_update_fields:
-                if firmware_update_field.field.edit:
-                    field_name = firmware_update_field.field.field_name
-                    field_value = firmware_update_field.value
+                field_name = firmware_update_field.field.field_name
+                field_value = firmware_update_field.value
+                # Check if the field is not editable before appending
+                if not firmware_update_field.field.edit:
                     firmware_update_data[-1]['fields'].append({
                         'field_name': field_name,
                         'value': field_value
                     })
 
-        # Convert the data to JSON
         firmware_update_json = json.dumps(firmware_update_data)
-
         return Response(firmware_update_json, status=200)
