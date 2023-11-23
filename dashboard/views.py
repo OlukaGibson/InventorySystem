@@ -447,7 +447,6 @@ def history(request,pk):
     # return HttpResponse(item.item_name)
     return render(request, 'dashboard/history.html', context)
 
-
 @login_required
 def display_firmware_updates(request):
     firmware_updates = FirmwareUpdate.objects.all()
@@ -536,127 +535,90 @@ def display_firmware_updates(request):
     return render(request, 'dashboard/firmware_update.html', context)
 
 
+
 # @login_required
 # def display_firmware_updates(request):
+#     firmware_updates = FirmwareUpdate.objects.all()
+#     fields = Fields.objects.all()
+
 #     group_by = request.GET.get('group_by')
+    
+#     # Define the firmware_update_data as an empty list
+#     firmware_update_data = []
+
 #     if group_by == 'editable':
-#         firmware_updates = FirmwareUpdate.objects.all()
 #         fields = Fields.objects.filter(edit=True)  # Filter fields with edit=True
 
-#         # Create a list to store the data for each entry
-#         firmware_update_data = []
-
-#         for firmware_update in firmware_updates:
-#             device_name = firmware_update.device_name.device_name
-#             channel_id = firmware_update.device_name.channel_id
-#             firmware_version = firmware_update.firmware.firmware_version
-
-#             field_data = []
-
-#             # Filter only the fields with edit=True
-#             for field in fields:
-#                 firmware_update_field = FirmwareUpdateField.objects.get(
-#                     firmware_update=firmware_update, field=field)
-#                 field_data.append({
-#                     'field_name': field.field_name,
-#                     'value': firmware_update_field.value
-#                 })
-
-#             firmware_update_data.append({
-#                 'device_name': device_name,
-#                 'channel_id': channel_id,
-#                 'firmware_version': firmware_version,
-#                 'fields': field_data
-#             })
-
-         
-        
 #     elif group_by == 'noneditable':
-#         firmware_updates = FirmwareUpdate.objects.all()
 #         fields = Fields.objects.filter(edit=False)  # Filter fields with edit=False
 
-#         # Create a list to store the data for each entry
-#         firmware_update_data = []
+#     else:
+#         fields = Fields.objects.all()
 
-#         for firmware_update in firmware_updates:
-#             device_name = firmware_update.device_name.device_name
-#             channel_id = firmware_update.device_name.channel_id
-#             firmware_version = firmware_update.firmware.firmware_version
 
-#             field_data = []
+#     #Forms
+#     if request.method == 'POST':
+#         newDevice = NewDevice(request.POST)
+#         fileForm = UploadFileForm(request.POST, request.FILES)
+#         fieldForm = NewField(request.POST)
+#         firmwareForm = NewFirmwareUpdate(request.POST)
+#         if fileForm.is_valid():
+#             fileForm.save()
+#             return redirect('display_firmware_updates')
+        
+#         if fieldForm.is_valid():
+#             fieldForm.save()
+#             return redirect('display_firmware_updates')
+        
+#         if newDevice.is_valid():
+#             newDevice.save()
+#             return redirect('display_firmware_updates')
+        
+#         if firmwareForm.is_valid():
+#             firmwareForm.save()
+#             return redirect('display_firmware_updates')
+        
+#     else:
+#         fileForm = UploadFileForm()
+#         fieldForm = NewField()
+#         newDevice = NewDevice()
+#         firmwareForm = NewFirmwareUpdate()
+        
+#     # Create a list to store the data for each entry
+#     firmware_update_data = []
 
-#             # Filter only the fields with edit=True
-#             for field in fields:
-#                 firmware_update_field = FirmwareUpdateField.objects.get(
-#                     firmware_update=firmware_update, field=field)
-#                 field_data.append({
-#                     'field_name': field.field_name,
-#                     'value': firmware_update_field.value
-#                 })
+#     for firmware_update in firmware_updates:
+#         device_name = firmware_update.device_name.device_name
+#         channel_id = firmware_update.device_name.channel_id
+#         fileDownload = firmware_update.device_name.fileDownload
+#         firmware_version = firmware_update.firmware.firmware_version
 
-#             firmware_update_data.append({
-#                 'device_name': device_name,
-#                 'channel_id': channel_id,
-#                 'firmware_version': firmware_version,
-#                 'fields': field_data
+#         field_data = []
+
+#         # Filter only the fields with edit=True
+#         for field in fields:
+#             firmware_update_field = FirmwareUpdateField.objects.get(
+#                 firmware_update=firmware_update, field=field)
+#             field_data.append({
+#                 'field_name': field.field_name,
+#                 'value': firmware_update_field.value
 #             })
 
-#     context = {
-#             'firmware_update_data': firmware_update_data,
-#             'fields': fields,
-#         }
-
-
-
-#     return render(request, 'dashboard/firmware_update.html', context)
-
-
-
-
-# @login_required
-# def display_firmware_updates(request):
-#     firmware_updates = FirmwareUpdate.objects.select_related('device_name','firmware').all().order_by('-device_name')
-
-#     group_by = request.GET.get('group_by')
-
-    # if group_by == 'firmware_version':
-    #     firmware_updates = firmware_updates.order_by('firmware__firmware_version') 
-    # elif group_by == 'fileDownload':
-    #     firmware_updates = firmware_updates.order_by('fileDownload')
-    # elif group_by == 'spvValue':
-    #     firmware_updates = firmware_updates.order_by('spvValue')
-    # elif group_by == 'syncState':
-    #     firmware_updates = firmware_updates.order_by('syncState')
-    # elif group_by == 'confrigDownload':
-    #     firmware_updates = firmware_updates.order_by('confrigDownload')
-
-    # if request.method == 'POST':
-    #     fileForm = UploadFileForm(request.POST, request.FILES)
-    #     if fileForm.is_valid():
-    #         fileForm.save()
-    #         return redirect('display_firmware_updates')
-        
-#         selected_ids = request.POST.getlist('selected_firmware_updates')
-#         edit_feature = request.POST.get('edit_feature')
-#         new_value = request.POST.get('new_value')
-
-#         # Update the selected entries based on the chosen feature
-#         if edit_feature == 'firmware_version':
-#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(firmware_version=new_value)
-#         elif edit_feature == 'fileDownload':
-#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(fileDownload=new_value)
-#         elif edit_feature == 'spvValue':
-#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(spvValue=new_value)
-#         elif edit_feature == 'syncState':
-#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(syncState=new_value)
-#         elif edit_feature == 'confrigDownload':
-#             FirmwareUpdate.objects.filter(pk__in=selected_ids).update(confrigDownload=new_value)
-        
+#         firmware_update_data.append({
+#             'device_name': device_name,
+#             'channel_id': channel_id,
+#             'fileDownload': fileDownload,
+#             'firmware_version': firmware_version,
+#             'fields': field_data,
+#         })
 
 #     context = {
-#         'firmware_updates': firmware_updates,
-#         'group_by': group_by,
-#         'fileForm': UploadFileForm(),
+#         'firmware_update_data': firmware_update_data,
+#         'fields': fields,
+#         'fileForm': fileForm,
+#         'fieldForm': fieldForm,
+#         'newDevice': newDevice,
+#         'firmwareForm': firmwareForm,
 #     }
 
 #     return render(request, 'dashboard/firmware_update.html', context)
