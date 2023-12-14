@@ -21,6 +21,14 @@ class Firmware(models.Model):
     def __str__(self):
         return self.firmware_version
 
+class Firm(models.Model):
+    firm_version = models.CharField(max_length=20,null=True)
+    firmware_file = models.BinaryField(null=True) # Use BinaryField to store binary data
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.firmware_version
+
 class Fields(models.Model):
     field_name = models.CharField(max_length=50, null=True)
     edit = models.BooleanField(default=False)
