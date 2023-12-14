@@ -16,6 +16,7 @@ class Firmware(models.Model):
     firmware_version = models.CharField(max_length=20, default='Firmware Version', null=True)
     firmware_version_file = models.FileField(upload_to='firmware/', null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    firmwareversionfile = models.BinaryField(null=True) # Use BinaryField to store binary data
 
     def __str__(self):
         return self.firmware_version
