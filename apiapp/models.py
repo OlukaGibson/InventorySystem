@@ -29,6 +29,7 @@ class Firm(models.Model):
     def __str__(self):
         return self.firmware_version
 
+
 class Fields(models.Model):
     field_name = models.CharField(max_length=50, null=True)
     edit = models.BooleanField(default=False)
