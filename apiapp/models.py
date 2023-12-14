@@ -14,21 +14,20 @@ class Device(models.Model):
 
 class Firmware(models.Model):
     firmware_version = models.CharField(max_length=20, default='Firmware Version', null=True)
-    gibsonexp = models.BinaryField(null=True) # Use BinaryField to store binary data
-    firmware_version_file = models.FileField(upload_to='firmware/', null=True)
+    firmware_version_content = models.BinaryField(null=True)  # Storing file content as binary data
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # Open and read the file to save its content as binary data
+        if self.firmware_version_file:
+            with open(self.firmware_version_file.path, 'rb') as file:
+                self.firmware_version_content = file.read()
+                self.firmware_version_file = None  # Remove reference to the file
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.firmware_version
-
-class Firm(models.Model):
-    firm_version = models.CharField(max_length=20,null=True)
-    firmware_file = models.BinaryField(null=True) # Use BinaryField to store binary data
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.firmware_version
-
 
 class Fields(models.Model):
     field_name = models.CharField(max_length=50, null=True)
