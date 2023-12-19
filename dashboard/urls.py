@@ -25,5 +25,4 @@ urlpatterns = [
     path('details/<int:pk>/',  views.details, name='details'),
     path('history/<int:pk>/',  views.history, name='history'),
     path('display_firmware_updates/',  views.display_firmware_updates, name='display_firmware_updates'),
-    path('download/<str:firmware_version>/', views.download_firmware, name='download_firmware'),
 ]

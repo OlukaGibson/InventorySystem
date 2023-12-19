@@ -74,7 +74,7 @@ class MyForm(forms.Form):
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = Firmware
-        fields = ['firmware_version']
+        fields = ('firmware_version', 'firmware_version_file')
 
 class NewField(forms.ModelForm):
     class Meta:

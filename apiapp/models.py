@@ -14,17 +14,8 @@ class Device(models.Model):
 
 class Firmware(models.Model):
     firmware_version = models.CharField(max_length=20, default='Firmware Version', null=True)
-    firmware_version_content = models.BinaryField(null=True)  # Storing file content as binary data
+    firmware_version_file = models.FileField(upload_to='firmware/', null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        # Open and read the file to save its content as binary data
-        if self.firmware_version_file:
-            with open(self.firmware_version_file.path, 'rb') as file:
-                self.firmware_version_content = file.read()
-                self.firmware_version_file = None  # Remove reference to the file
-
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.firmware_version

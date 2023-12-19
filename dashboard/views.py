@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Casing, Production,StockHistory
-from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, NewField, NewDevice, NewFirmwareUpdate, UploadFileForm
+from .forms import InventoryForm, EditForm, CasingForm, THTForm,  MyForm, TheForm, NewStockForm, DispenseForm, UploadFileForm, NewField, NewDevice, NewFirmwareUpdate
 from django.contrib.auth.models import User
 from user.models import Profile
 from django.db.models import Avg
@@ -474,9 +474,11 @@ def display_firmware_updates(request):
         fieldForm = NewField(request.POST)
         firmwareForm = NewFirmwareUpdate(request.POST)
         if fileForm.is_valid():
-            firmwares = fileForm.save(commit=False)
-            firmwares.firmware_version_content = request.FILES['firmware_version_file'].read()
-            firmwares.save()
+            fileForm.save()
+            return redirect('display_firmware_updates')
+        
+        if fieldForm.is_valid():
+            fieldForm.save()
             return redirect('display_firmware_updates')
         
         if newDevice.is_valid():
@@ -532,17 +534,7 @@ def display_firmware_updates(request):
 
     return render(request, 'dashboard/firmware_update.html', context)
 
-def download_firmware(request, firmware_version):
-    firmware = get_object_or_404(Firmware, firmware_version=firmware_version)
-    response = HttpResponse(firmware.firmware_version_content, content_type='application/octet-stream')
-    response['Content-Disposition'] = f'attachment; filename="{firmware.firmware_version}.bin"'
-    return response
 
-# def file_download_view(request, firmware_version_number):
-#     file_storage = get_object_or_404(Firmware, firmware_version=firmware_version_number)
-#     response = HttpResponse(file_storage.firmware_version_files, content_type='application/force-download')
-#     response['Content-Disposition'] = f'attachment; filename="{file_storage.firmware_version}"'
-#     return response
 
 # @login_required
 # def display_firmware_updates(request):
