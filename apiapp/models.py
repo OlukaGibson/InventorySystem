@@ -14,7 +14,7 @@ class Device(models.Model):
 
 class Firmware(models.Model):
     firmware_version = models.CharField(max_length=20, null=True)
-    firmware_version_file = models.FileField(upload_to='', null=True)
+    firmware_version_file = models.FileField(upload_to='firmware/', null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
