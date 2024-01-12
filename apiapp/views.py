@@ -15,7 +15,7 @@ class UpdateSensorDataView(APIView):
 
         # Check if fileDownload is 0 for the device
         if device.fileDownload == 0:
-            firmware_update = FirmwareUpdate.objects.filter(device_name=device).first()
+            firmware_update = FirmwareUpdate.objects.filter(device_name=device).first() 
 
             # Check if a firmware update is associated with the device
             if firmware_update:
