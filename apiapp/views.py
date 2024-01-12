@@ -4,7 +4,7 @@ from .models import FirmwareUpdate, Device, Firmware, Fields, FirmwareUpdateFiel
 import json
 import os
 from django.http import HttpResponse
-
+from django.core.files.storage import default_storage
 
 class UpdateSensorDataView(APIView):
     def get(self, request, id, *args, **kwargs):
@@ -46,12 +46,13 @@ class UpdateSensorDataView(APIView):
         else:
             firmware_update = FirmwareUpdate.objects.filter(device_name=device).first()
             if firmware_update:
-                firmwware = firmware_update.firmware
-                firmware_file_path = firmwware.firmware_version_file.path
-
-                with open(firmware_file_path, 'rb') as firmware_file:
-                    response = HttpResponse(firmware_file, content_type='application/octet-stream')
-                    response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(firmware_file_path)
+                firmware = firmware_update.firmware
+                firmware_file = firmware.firmware_version_file
+                
+                with default_storage.open(firmware_file.name, 'rb') as file:
+                    # Perform operations on the file, e.g., return as HttpResponse
+                    response = HttpResponse(file.read(), content_type='application/octet-stream')
+                    response['Content-Disposition'] = f'attachment; filename="{firmware_file.name}"'
                     
                 
                 device.fileDownload = 1
