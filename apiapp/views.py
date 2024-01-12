@@ -47,7 +47,7 @@ class UpdateSensorDataView(APIView):
             firmware_update = FirmwareUpdate.objects.filter(device_name=device).first()
             if firmware_update:
                 firmwware = firmware_update.firmware
-                firmware_file_path = firmwware.firmware_version_file.url
+                firmware_file_path = firmwware.firmware_version_file.path
 
                 with open(firmware_file_path, 'rb') as firmware_file:
                     response = HttpResponse(firmware_file, content_type='application/octet-stream')
