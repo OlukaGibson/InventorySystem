@@ -71,263 +71,135 @@
     
         
             <div class="container">
-                <form method="post" action="{% url 'display_firmware_updates' %}">
-                    {% csrf_token %}
                 <div class="row my-4">
-                    <div class="col-md-4">
-                        <label>Select the feature to edit:</label><br>
-                        <input type="radio" name="edit_feature" value="firmware_version"> Firmware Version<br>
-                        <input type="radio" name="edit_feature" value="syncState"> Sync State<br>
-                        <input type="radio" name="edit_feature" value="spvValue"> SPV Value<br>
-                        <input type="radio" name="edit_feature" value="confrigDownload"> Confriguration Download<br>
-                        <br>
-                        <label>Enter the new value:</label><br>
-                        <input type="number" name="new_value">
-                        <br>
-                        <input type="submit" value="Apply Changes" class="btn btn-primary">
-                        <br><br>
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ fileForm }}
-                            <button type="submit">Upload</button>
-                        </form>
-                        <br>
-                        
-                    </div>
-                    <div class="col-md-8">
-                        <a href="?group_by=firmware_version">
-                            <button type="button" class="btn btn-primary">
-                                Firmware Version
-                            </button>
-                        </a>      
-                        <a href="?group_by=fileDownload">
-                            <button type="button" class="btn btn-primary">
-                                File Download State
+                    <div class="col-md-2">
+                        <div class="dropdown">
+                            <h4 class="dropdown-toggle" data-toggle="dropdown" id="fieldsDropdown">
+                                Fields
+                            </h4>
+                            <div class="dropdown-menu" aria-labelledby="fieldsDropdown">
+                                <a class="dropdown-item" href="?group_by=editable">
+                                    Editable Fields
+                                </a>
+                                <a class="dropdown-item" href="?group_by=noneditable">
+                                    Non-Editable Fields
+                                </a>
+                                <a class="dropdown-item" href="?group_by=all">
+                                    All fields
+                                </a>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal1" style="padding: 10px 20px; margin: 5px;">
+                                    New Fields
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <hr>
+                    
+                        <div class="dropdown">
+                            <h4 class="dropdown-toggle" data-toggle="dropdown" id="firmwareDropdown">
+                                Firmware
+                            </h4>
+                            <div class="dropdown-menu" aria-labelledby="firmwareDropdown">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#popupFormModal2">
+                                    New Firmware
+                                </button>
+                                <button type="button" class="dropdown-item">
+                                    All Firmware
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <hr>
+                    
+                        <div class="dropdown">
+                            <h4 class="dropdown-toggle" data-toggle="dropdown" id="devicesDropdown">
+                                Devices
+                            </h4>
+                            <div class="dropdown-menu" aria-labelledby="devicesDropdown">
+                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#popupFormModal3">
+                                    Add Device
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <hr>
+                    
+                        <h4>Firmware Update</h4>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal4" style="padding: 10px 20px; margin: 5px;">
+                            New Firmware Update
+                        </button>
+                    </div>                    
+                    <!-- <div class="col-md-2">
+                        <h3> Fields </h3>
+                        <a href="?group_by=editable">
+                            <button type="button" class="btn btn-primary" style="padding: 10px 20px; margin: 5px;">
+                                Editable Fields
                             </button>
                         </a>
-                        <a href="?group_by=spvValue">
-                            <button type="button" class="btn btn-primary">
-                                SPV Value
+                        <a href="?group_by=noneditable">
+                            <button type="button" class="btn btn-primary" style="margin: 5px;">
+                                Non-Editable Fields
+                            </button>
+                        </a>   
+                        <a href="?group_by=all">
+                            <button type="button" class="btn btn-primary" style="padding: 10px 20px; margin: 5px;">
+                                All fields
                             </button>
                         </a>
-                        <a href="?group_by=syncState">
-                            <button type="button" class="btn btn-primary">
-                                Sync State
-                            </button>
-                        </a>
-                        <a href="?group_by=confrigDownload">
-                            <button type="button" class="btn btn-primary">
-                                Confrig Download
-                            </button>
-                        </a>
-                        <br><br>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal1" style="padding: 10px 20px; margin: 5px;">
+                            New Fields
+                        </button>
+
+                        <hr>
+                        <h3>Firmware</h3>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal2" style="padding: 10px 20px; margin: 5px;">
+                            New Firmware
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            All Firmware
+                        </button>
+
+                        <hr>
+                        <h3>Devices</h3>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal3" style="padding: 10px 20px; margin: 5px;">
+                            Add Device
+                        </button>
+                        <hr>
+
+                        <h3>Firmware Update</h3>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal4" style="padding: 10px 20px; margin: 5px;">
+                            New Firmware Update
+                        </button>
+                    </div> -->
+                    <div class="col-md-10">     
                         <table class="table bg-white">
                             <thead class="bg-primary">
                                 <tr class="text-white">
-                                    <th scope="col">Selection</th>
+                                    <th scope="col"></th>
                                     <th scope="col">Device Name</th>
                                     <th scope="col">Channel Id</th>
                                     <th scope="col">Firmware Version</th>
                                     <th scope="col">File Download</th>
-                                    <th scope="col">SPV Value</th>
-                                    <th scope="col">Sync State</th>
-                                    <th scope="col">Confriguration Download</th>
+                                    {% for field in fields %}
+                                        <th scope="col">{{ field.field_name }}</th>
+                                    {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for firmware_update in firmware_updates %}
-                                <tr>
-                                    <th scope="row"><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></th>
-                                    <td>{{ firmware_update.device_name.device_name }}</td>
-                                    <td>{{ firmware_update.device_name.channel_id }}</td>
-                                    <td>{{ firmware_update.firmware.firmware_version   }}</td>
-                                    <td>{{ firmware_update.fileDownload }}</td>
-                                    <td>{{ firmware_update.spvValue }}</td>
-                                    <td>{{ firmware_update.syncState }}</td>
-                                    <td>{{ firmware_update.confrigDownload }}</td>
-                                </tr>
+                                {% for firmware_update in firmware_update_data %}
+                                    <tr>
+                                        <th scope="row"><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></th>
+                                        <td>{{ firmware_update.device_name }}</td>
+                                        <td>{{ firmware_update.channel_id }}</td>
+                                        <td>{{ firmware_update.firmware_version }}</td>
+                                        <td>{{ firmware_update.fileDownload}}</td>
+                                        {% for field in firmware_update.fields %}
+                                            <td>{{ field.value }}</td>
+                                        {% endfor %}
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                </form>
-            </div>
-{% endblock%}
-
-
-
-
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block content %}
-    <!--Top Side-->
-    <div class="container">
-        <div class="row mt-4">
-            
-            <!--End Left Top Side-->
-  
-            <!--Right Top Side-->
-            <div class="container">
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                Information
-                            </div>
-                            <div class="card-body">
-                                <marquee behavior="" direction="">
-                                    <h3 class="my-4">
-                                        Welcome {{user.username}}
-                                    </h3>
-                                </marquee>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                Menu
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <a class="text-decoration-none text-dark" href="{% url 'staff' %}">
-                                            <div class="card my-card shadow text-center p-3">
-                                                <h4>
-                                                    Employees <i class="fas fa-users"></i>
-                                                </h4>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a class="text-decoration-none text-dark" href="{% url 'products' %}">
-                                            <div class="card my-card shadow text-center p-3">
-                                                <h4>
-                                                    Inventory <i class="fas fa-box"></i>
-                                                </h4>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a class="text-decoration-none text-dark" href="{% url 'metadata' %}">
-                                            <div class="card my-card shadow text-center p-3">
-                                                <h4>Reports <i class="fas fa-shipping-fast"></i></h4>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--End Right Top Side-->
-  
-        </div>
-    </div>
-    <!--End Top Side-->
-    <!--Table-->
-    
-        
-            <div class="container">
-                <form id="editForm" method="post">
-                    {% csrf_token %}
-                    <div class="row my-4">
-                        <div class="col-md-2">
-                            <h3> Fields </h3>
-                            <a href="?group_by=editable">
-                                <button type="button" class="btn btn-primary" style="padding: 10px 20px; margin: 5px;">
-                                    Editable Fields
-                                </button>
-                            </a>
-                            <a href="?group_by=noneditable">
-                                <button type="button" class="btn btn-primary" style="margin: 5px;">
-                                    Non-Editable Fields
-                                </button>
-                            </a>   
-                            <a href="?group_by=all">
-                                <button type="button" class="btn btn-primary" style="padding: 10px 20px; margin: 5px;">
-                                    All fields
-                                </button>
-                            </a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal1" style="padding: 10px 20px; margin: 5px;">
-                                New Field
-                            </button>
-                            <button type="button" class="btn btn-primary" id="editField" data-toggle="modal" data-target="#popupFormModal3" style="padding: 10px 20px; margin: 5px;">
-                                Edit Field
-                            </button>
-
-                            <hr><br>
-                            <h3>Firmware</h3>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popupFormModal2" style="padding: 10px 20px; margin: 5px;">
-                                New Firmware
-                            </button>
-                            <button type="button" class="btn btn-primary">
-                                All Firmware
-                            </button>
-                        </div>
-                        <div class="col-md-10">     
-                            <table class="table bg-white">
-                                <thead class="bg-primary">
-                                    <tr class="text-white">
-                                        <th scope="col"></th>
-                                        <th scope="col">Device Name</th>
-                                        <th scope="col">Channel Id</th>
-                                        <th scope="col">Firmware Version</th>
-                                        <th scope="col">File Download</th>
-                                        {% for field in fields %}
-                                            <th scope="col">{{ field.field_name }}</th>
-                                        {% endfor %}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for firmware_update in firmware_update_data %}
-                                        <tr>
-                                            <th scope="row"><input type="checkbox" name="selected_firmware_updates" value="{{ firmware_update.id }}"></th>
-                                            <td>{{ firmware_update.device_name }}</td>
-                                            <td>{{ firmware_update.channel_id }}</td>
-                                            <td>{{ firmware_update.firmware_version }}</td>
-                                            <td>{{ firmware_update.fileDownload}}</td>
-                                            {% for field in firmware_update.fields %}
-                                                <td>{{ field.value }}</td>
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-                <div class="modal fade" id="popupFormModal3" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel3" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="popupFormModalLabel3">Edit Field</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="editFieldForm" method="post">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="editField">Select Field:</label>
-                                        <select name="editField" id="editField" class="form-control" required>
-                                            <!-- Field options will be populated using JavaScript -->
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editValue">New Value:</label>
-                                        <input type="text" name="editValue" id="editValue" class="form-control" required>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="applyEdit" class="btn btn-primary">Apply Edit</button>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="modal fade" id="popupFormModal1" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel1" aria-hidden="true">
@@ -379,11 +251,61 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" id="popupFormModal3" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel3" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="popupFormModalLabel3">Add Device</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your form goes here -->
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ newDevice|crispy }}
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" name="newDevice " class="btn btn-primary">Submit</button>
+                                <!-- Add an additional button if needed -->
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="popupFormModal4" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel4" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="popupFormModalLabel4">New Firmware</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Your form goes here -->
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ firmwareForm|crispy }}
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" name="firmwareForm " class="btn btn-primary">Submit</button>
+                                <!-- Add an additional button if needed -->
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <script>
                 // JavaScript to handle the form submission inside the modal
                 const form1SubmitButton = document.querySelector('#popupFormModal1 button[name="fieldForm"]');
                 const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="fileForm "]');
+                const form3SubmitButton = document.querySelector('#popupFormModal3 button[name="newDevice "]');
+                const form4SubmitButton = document.querySelector('#popupFormModal4 button[name="firmwareForm "]');
                 form1SubmitButton.addEventListener('click', function () {
                     // Submit the form when the "Submit" button is clicked
                     document.querySelector('#popupFormModal1 form').submit();
@@ -392,48 +314,13 @@
                     // Submit the form when the "Submit" button is clicked
                     document.querySelector('#popupFormModal2 form').submit();
                 });
-                // JavaScript to handle the "Edit Field" button click
-                document.getElementById("editField").addEventListener("click", function() {
-                    // Get selected entries
-                    const selectedEntries = document.querySelectorAll('input[name="selected_firmware_updates"]:checked');
-                
-                    if (selectedEntries.length === 0) {
-                        alert("Please select at least one entry to edit.");
-                    } else {
-                        // Populate the field selection in the modal form
-                        const fieldSelect = document.querySelector('#popupFormModal3 select[name="editField"]');
-                        fieldSelect.innerHTML = '';  // Clear previous options
-                    
-                        {% for field in fields %}
-                            const option = document.createElement('option');
-                            option.value = "{{ field.id }}";
-                            option.text = "{{ field.field_name }}";
-                            fieldSelect.appendChild(option);
-                        {% endfor %}
-                    }
+                form3SubmitButton.addEventListener('click', function () {
+                    // Submit the form when the "Submit" button is clicked 
+                    document.querySelector('#popupFormModal3 form').submit();
                 });
-                // JavaScript to handle the modal form submission
-                document.getElementById("applyEdit").addEventListener("click", function() {
-                    const selectedField = document.querySelector('#editField').value;
-                    const newValue = document.querySelector('#editValue').value;
-                
-                    if (selectedField === '' || newValue === '') {
-                        alert("Please select a field and enter a new value.");
-                    } else {
-                        const selectedEntries = document.querySelectorAll('input[name="selected_firmware_updates"]:checked');
-                    
-                        if (selectedEntries.length === 0) {
-                            alert("Please select at least one entry to edit.");
-                        } else {
-                            const selectedEntryIds = Array.from(selectedEntries).map(entry => entry.value);
-                        
-                            // Perform the edit operation using AJAX or form submission
-                            // You can send the selectedField, newValue, and selectedEntryIds to your server for processing
-                        
-                            // Optionally, close the modal
-                            $('#popupFormModal3').modal('hide');
-                        }
-                    }
+                form4SubmitButton.addEventListener('click', function () {
+                    // Submit the form when the "Submit" button is clicked 
+                    document.querySelector('#popupFormModal4 form').submit();
                 });
             </script>
 {% endblock%}
