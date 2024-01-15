@@ -187,28 +187,29 @@
 
                 <div class="modal fade" id="popupFormModal2" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel2" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="popupFormModalLabel2">New Firmware</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Your form goes here -->
-                                <form method="post">
-                                    {% csrf_token %}
-                                    {{ fileForm|crispy }}
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" name="fileForm " class="btn btn-primary">Submit</button>
-                                <!-- Add an additional button if needed -->
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </div>
+                       <div class="modal-content">
+                          <div class="modal-header">
+                             <h5 class="modal-title" id="popupFormModalLabel2">New Firmware</h5>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                             </button>
+                          </div>
+                          <div class="modal-body">
+                             <!-- Your form goes here -->
+                             <form method="post">
+                                {% csrf_token %}
+                                {% crispy fileForm %}
+                             </form>
+                          </div>
+                          <div class="modal-footer">
+                             <button type="button" name="fileForm" class="btn btn-primary">Submit</button>
+                             <!-- Add an additional button if needed -->
+                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                          </div>
+                       </div>
                     </div>
-                </div>
+                 </div>
+
                 <div class="modal fade" id="popupFormModal3" tabindex="-1" role="dialog" aria-labelledby="popupFormModalLabel3" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -261,17 +262,17 @@
             <script>
                 // JavaScript to handle the form submission inside the modal
                 const form1SubmitButton = document.querySelector('#popupFormModal1 button[name="fieldForm"]');
-                const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="fileForm "]');
+                // const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="fileForm "]');
                 const form3SubmitButton = document.querySelector('#popupFormModal3 button[name="newDevice "]');
                 const form4SubmitButton = document.querySelector('#popupFormModal4 button[name="firmwareForm "]');
                 form1SubmitButton.addEventListener('click', function () {
                     // Submit the form when the "Submit" button is clicked
                     document.querySelector('#popupFormModal1 form').submit();
                 });
-                form2SubmitButton.addEventListener('click', function () {
-                    // Submit the form when the "Submit" button is clicked
-                    document.querySelector('#popupFormModal2 form').submit();
-                });
+                // form2SubmitButton.addEventListener('click', function () {
+                //     // Submit the form when the "Submit" button is clicked
+                //     document.querySelector('#popupFormModal2 form').submit();
+                // });
                 form3SubmitButton.addEventListener('click', function () {
                     // Submit the form when the "Submit" button is clicked 
                     document.querySelector('#popupFormModal3 form').submit();
@@ -280,5 +281,10 @@
                     // Submit the form when the "Submit" button is clicked 
                     document.querySelector('#popupFormModal4 form').submit();
                 });
-            </script>
+                const form2SubmitButton = document.querySelector('#popupFormModal2 button[name="fileForm"]');
+                form2SubmitButton.addEventListener('click', function () {
+                   // Submit the form when the "Submit" button is clicked
+                   document.querySelector('#popupFormModal2 form').submit();
+                });
+                      </script>
 {% endblock%}

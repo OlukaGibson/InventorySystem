@@ -3,7 +3,8 @@ from .models import Stock, Casing, Production
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from apiapp.models import FirmwareUpdate, Firmware, Device, FirmwareUpdateHistory, Fields
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
 
 
 class InventoryForm(forms.ModelForm):
@@ -71,16 +72,22 @@ class MyForm(forms.Form):
         )
 
 
-# class UploadFileForm(forms.ModelForm):
-#     class Meta:
-#         model = Firmware
-#         fields = ('firmware_version', 'firmware_version_file')
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = Firmware
+        fields = ('firmware_version', 'firmware_version_file')
+
+    def __init__(self, *args, **kwargs):
+        super(UploadFileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit'))
 
 #the edits
         
-class UploadFileForm(forms.FileField):
-    firmware_version = forms.CharField()
-    firmware_version_file = forms.FileField()
+# class UploadFileForm(forms.FileField):
+    # firmware_version = forms.CharField()
+    # firmware_version_file = forms.FileField()
  
 #the edits
 class NewField(forms.ModelForm):
