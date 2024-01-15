@@ -71,16 +71,16 @@ class MyForm(forms.Form):
         )
 
 
-class UploadFileForm(forms.ModelForm):
-    class Meta:
-        model = Firmware
-        fields = ('firmware_version', 'firmware_version_file')
+# class UploadFileForm(forms.ModelForm):
+#     class Meta:
+#         model = Firmware
+#         fields = ('firmware_version', 'firmware_version_file')
 
 #the edits
         
-# class UploadFileForm(forms.FileField):
-    # firmware_version = forms.CharField()
-    # firmware_version_file = forms.FileField()
+class UploadFileForm(forms.FileField):
+    firmware_version = forms.CharField()
+    firmware_version_file = forms.FileField()
  
 #the edits
 class NewField(forms.ModelForm):

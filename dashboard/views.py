@@ -474,11 +474,11 @@ def display_firmware_updates(request):
         fieldForm = NewField(request.POST)
         firmwareForm = NewFirmwareUpdate(request.POST)
         if fileForm.is_valid():
-            # firmware_version_ = request.POST['firmware_version']
-            # firmware_version_file_ = request.FILES['firmware_version_file']
-            # firwareFile = Firmware.objects.create(firmware_version=firmware_version_, firmware_version_file=firmware_version_file_)
-            # firwareFile.save()
-            print(request.FILES) 
+            firmware_version_ = request.POST['firmware_version']
+            firmware_version_file_ = request.FILES['firmware_version_file']
+            firwareFile = Firmware.objects.create(firmware_version=firmware_version_, firmware_version_file=firmware_version_file_)
+            firwareFile.save()
+            # print(request.FILES) 
             fileForm.save()
             return redirect('display_firmware_updates')
         
